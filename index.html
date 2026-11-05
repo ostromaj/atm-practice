@@ -249,6 +249,8 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
 .modal-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
 .shell-row{font-size:58px;letter-spacing:8px;margin:6px 0 10px}
 .shell-row .off{filter:grayscale(1);opacity:.3}
+.modal-lang{position:absolute;left:14px;top:14px;min-height:48px;padding:6px 14px;border-radius:999px;border:0;background:var(--coral);color:#fff;font-weight:700;font-size:17px;z-index:2}
+.modal-card{padding-top:70px !important}
 .close-x{position:absolute;right:14px;top:14px;width:52px;height:52px;border-radius:50%;border:0;background:rgba(0,0,0,.08);font-size:26px;color:var(--ink)}
 .bubbles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .bubbles span{position:absolute;bottom:-40px;border-radius:50%;border:3px solid rgba(29,111,130,.35);animation:rise 4s ease-in forwards}
@@ -261,6 +263,13 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
 .toast{position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:30;background:var(--kelp);color:#fff;font-family:var(--head);font-weight:600;font-size:28px;padding:10px 26px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.3);pointer-events:none;animation:toast 1.1s ease forwards}
 @keyframes toast{0%{opacity:0;transform:translate(-50%,10px)}15%,75%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
 
+.lang-tog,.lang-pill,.lang-top{font-weight:700}
+.lang-pill{background:var(--coral);border-color:var(--coral);color:#fff}
+.lang-tog{background:var(--coral);border-color:var(--coral);color:#fff}
+.topbar .lang-top{background:var(--coral);color:#fff}
+.lang-es .k.fn{font-size:clamp(10px,1.55vh,13px);letter-spacing:-.2px;padding:0 2px}
+.lang-es .slot .lbl{font-size:14px;width:80px}
+@media (max-width:640px){.topbar .lang-top{padding:6px 10px;font-size:17px}.topbar .dots{display:none}}
 @media (max-width:920px){
   #play{height:auto;min-height:100vh}
   .stage{grid-template-columns:1fr}
@@ -282,7 +291,7 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
   body > *:not(#modal){display:none !important}
   .modal{position:static;background:#fff}
   .modal-card{box-shadow:none;border:4px solid #000}
-  .modal-btns,.close-x{display:none}
+  .modal-btns,.close-x,.modal-lang{display:none}
 }
 </style>
 </head>
@@ -297,18 +306,19 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
 <div id="start" class="view">
   <div class="start-card">
     <div class="bob" style="width:150px;margin:0 auto" id="startTurtle"></div>
-    <h1>ATM Practice <span>with Shelly</span></h1>
-    <p>Hi! I'm Shelly the turtle. I will help you learn to use an ATM.</p>
-    <p style="font-weight:700;color:var(--ink)">What is your first name?</p>
+    <h1 data-i18n="title">ATM Practice <span>with Shelly</span></h1>
+    <p data-i18n="intro">Hi! I'm Shelly the turtle. I will help you learn to use an ATM.</p>
+    <p style="font-weight:700;color:var(--ink)" data-i18n="askName">What is your first name?</p>
     <form class="name-row" id="nameForm" autocomplete="off">
       <input id="nameInput" maxlength="20" placeholder="Type your name" aria-label="Your first name">
-      <button class="big-btn" type="submit">Let's go! ▶</button>
+      <button class="big-btn" type="submit" data-i18n="go">Let's go! ▶</button>
     </form>
     <div class="toggles">
-      <button class="tog" type="button" data-toggle="read" aria-pressed="false">🔊 Read to me</button>
-      <button class="tog" type="button" data-toggle="sound" aria-pressed="true">🎵 Sounds</button>
+      <button class="tog lang-tog" type="button" data-toggle="lang">🌎 Español</button>
+      <button class="tog" type="button" data-toggle="read" aria-pressed="false" data-i18n="readMe">🔊 Read to me</button>
+      <button class="tog" type="button" data-toggle="sound" aria-pressed="true" data-i18n="sounds">🎵 Sounds</button>
     </div>
-    <button class="skip" type="button" id="skipName">Skip, just play</button>
+    <button class="skip" type="button" id="skipName" data-i18n="skip">Skip, just play</button>
   </div>
 </div>
 
@@ -318,30 +328,32 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
     <div style="width:92px" class="bob" id="mapTurtle"></div>
     <div class="hello">
       <h1 id="hello">Hi!</h1>
-      <p>Pick a lesson. Shelly will help you!</p>
+      <p data-i18n="pick">Pick a lesson. Shelly will help you!</p>
     </div>
     <div class="head-btns">
-      <button class="pill" data-toggle="read" aria-pressed="false">🔊 Read to me</button>
-      <button class="pill" data-toggle="sound" aria-pressed="true">🎵 Sounds</button>
-      <button class="pill shells" id="shellsBtn">🐚 My Shells: <b id="shellCount">0</b></button>
+      <button class="pill lang-pill" data-toggle="lang">🌎 Español</button>
+      <button class="pill" data-toggle="read" aria-pressed="false" data-i18n="readMe">🔊 Read to me</button>
+      <button class="pill" data-toggle="sound" aria-pressed="true" data-i18n="sounds">🎵 Sounds</button>
+      <button class="pill shells" id="shellsBtn"><span data-i18n="myShells">🐚 My Shells:</span> <b id="shellCount">0</b></button>
     </div>
   </div>
 
-  <div class="group-title"><span class="step-tag">Step 1</span><h2>Learn with Shelly</h2><p>Do these in order.</p></div>
+  <div class="group-title"><span class="step-tag" data-i18n="step1">Step 1</span><h2 data-i18n="learn">Learn with Shelly</h2><p data-i18n="inOrder">Do these in order.</p></div>
   <div class="tiles" id="lessonTiles"></div>
 
-  <div class="group-title"><span class="step-tag">Step 2</span><h2>Missions</h2><p>Use the ATM in real life!</p></div>
+  <div class="group-title"><span class="step-tag" data-i18n="step2">Step 2</span><h2 data-i18n="missions">Missions</h2><p data-i18n="realLife">Use the ATM in real life!</p></div>
   <div class="tiles" id="missionTiles"></div>
 
-  <div class="group-title"><span class="step-tag">Any time</span><h2>Free Play</h2><p>Try anything you want.</p></div>
-  <div class="tiles"><button class="tile free" id="freeTile"><span class="ico">🏧</span><h3>Free Play ATM</h3><span class="sub">No rules. Practice anything!</span></button></div>
+  <div class="group-title"><span class="step-tag" data-i18n="anyTime">Any time</span><h2 data-i18n="freePlay">Free Play</h2><p data-i18n="tryAny">Try anything you want.</p></div>
+  <div class="tiles"><button class="tile free" id="freeTile"><span class="ico">🏧</span><h3 data-i18n="freeAtm">Free Play ATM</h3><span class="sub" data-i18n="noRules">No rules. Practice anything!</span></button></div>
 </div>
 
 <!-- ============ PLAY ============ -->
 <div id="play" class="view" hidden>
   <div class="topbar">
-    <button class="home" id="homeBtn">🗺️ Map</button>
+    <button class="home" id="homeBtn" data-i18n="map">🗺️ Map</button>
     <div class="act-title" id="actTitle"></div>
+    <button class="home lang-top" data-toggle="lang">🌎 Español</button>
     <div class="dots" id="dots"></div>
   </div>
   <div class="stage">
@@ -352,23 +364,23 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
       </div>
       <div class="choices" id="bChoices" hidden></div>
       <div class="coach-btns">
-        <button class="cbtn" id="readBtn" aria-label="Read out loud">🔊 Read</button>
-        <button class="cbtn help" id="helpBtn">💡 Help</button>
-        <button class="cbtn next" id="nextBtn" hidden>Next ▶</button>
+        <button class="cbtn" id="readBtn" data-i18n="read">🔊 Read</button>
+        <button class="cbtn help" id="helpBtn" data-i18n="help">💡 Help</button>
+        <button class="cbtn next" id="nextBtn" hidden data-i18n="next">Next ▶</button>
       </div>
       <div class="checklist" id="checklist" hidden></div>
       <div class="wallet" id="walletBox">
-        <div class="wallet-head"><span>👛 My Wallet</span><span class="cash" id="wCashTotal">Cash: $0</span></div>
+        <div class="wallet-head"><span data-i18n="wallet">👛 My Wallet</span><span class="cash" id="wCashTotal">Cash: $0</span></div>
         <div class="wallet-items" id="walletItems"></div>
       </div>
     </aside>
 
     <div class="atm-area" id="atmArea">
       <div class="atm" id="atm">
-        <div class="atm-top"><span>🐢 TURTLE BANK</span><span class="ab">ATM</span></div>
+        <div class="atm-top"><span data-i18n="bank">🐢 TURTLE BANK</span><span class="ab" data-i18n="atmBadge">ATM</span></div>
         <div class="screen-wrap" data-part="screen" id="screenWrap">
           <div class="screen" id="screen"></div>
-          <span class="part-tag" data-tag="screen" style="left:12px;top:-14px">SCREEN</span>
+          <span class="part-tag" data-tag="screen" data-i18n="tScreen" style="left:12px;top:-14px">SCREEN</span>
         </div>
         <div class="hw">
           <div>
@@ -377,22 +389,22 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
               <div class="shield" aria-hidden="true">
                 <svg viewBox="0 0 200 110"><path d="M20 108c-6-30 4-54 26-62 6-2 12 0 16 4V20c0-8 12-8 12 0v34V10c0-8 12-8 12 0v44V8c0-8 12-8 12 0v46V16c0-8 12-8 12 0v58c8-12 18-22 26-18 8 4 0 16-6 26-10 18-20 30-36 36z" fill="#d9a07a" stroke="#8a5a3c" stroke-width="4" stroke-linejoin="round"/></svg>
               </div>
-              <span class="part-tag" data-tag="keypad" style="left:10px;top:-14px">KEYPAD</span>
+              <span class="part-tag" data-tag="keypad" data-i18n="tKeypad" style="left:10px;top:-14px">KEYPAD</span>
             </div>
-            <button class="cover-btn" id="coverBtn" aria-pressed="false">🖐️ Cover the keypad</button>
+            <button class="cover-btn" id="coverBtn" aria-pressed="false" data-i18n="cover">🖐️ Cover the keypad</button>
           </div>
           <div class="slots">
             <button class="slot" id="slotCard" data-part="cardslot">
-              <span class="lbl">CARD<br>SLOT</span><span class="mouth"><span class="item card-item">🐢 MY CARD</span></span><span class="light"></span>
-              <span class="part-tag" data-tag="cardslot" style="right:8px;top:-14px">CARD SLOT</span>
+              <span class="lbl" data-i18n="lCard">CARD<br>SLOT</span><span class="mouth"><span class="item card-item" data-i18n="myCard">🐢 MY CARD</span></span><span class="light"></span>
+              <span class="part-tag" data-tag="cardslot" data-i18n="tCard" style="right:8px;top:-14px">CARD SLOT</span>
             </button>
             <button class="slot" id="slotReceipt" data-part="receipt">
-              <span class="lbl">RECEIPT</span><span class="mouth"><span class="item receipt-item"></span></span><span class="light"></span>
-              <span class="part-tag" data-tag="receipt" style="right:8px;top:-14px">RECEIPT SLOT</span>
+              <span class="lbl" data-i18n="lReceipt">RECEIPT</span><span class="mouth"><span class="item receipt-item"></span></span><span class="light"></span>
+              <span class="part-tag" data-tag="receipt" data-i18n="tReceipt" style="right:8px;top:-14px">RECEIPT SLOT</span>
             </button>
             <button class="slot cash-slot" id="slotCash" data-part="cash">
-              <span class="lbl">CASH</span><span class="mouth"><span class="item cash-item" id="cashItem"></span></span><span class="light"></span>
-              <span class="part-tag" data-tag="cash" style="right:8px;top:-14px">CASH SLOT</span>
+              <span class="lbl" data-i18n="lCash">CASH</span><span class="mouth"><span class="item cash-item" id="cashItem"></span></span><span class="light"></span>
+              <span class="part-tag" data-tag="cash" data-i18n="tCash" style="right:8px;top:-14px">CASH SLOT</span>
             </button>
           </div>
         </div>
@@ -419,11 +431,47 @@ const FAST = [20,40,60,100];
 
 /* ================= storage ================= */
 const KEY = 'turtleATM:v1';
-let db = {students:{}, last:'', read:false, sound:true};
+let db = {students:{}, last:'', read:false, sound:true, lang:'en'};
 try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && typeof d === 'object') db = Object.assign(db, d); } catch(e) {}
+if (/[?&]lang=es\b/.test(location.search)) db.lang = 'es';
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(db)); } catch(e) {} }
 let student = '';
 function prog(){ const k = student || '_guest'; if (!db.students[k]) db.students[k] = {done:{}}; return db.students[k]; }
+
+/* ================= language ================= */
+const t = (en, es) => db.lang === 'es' ? es : en;
+const STATIC = {
+  title:['ATM Practice <span>with Shelly</span>','Practica el cajero <span>con Shelly</span>'],
+  intro:["Hi! I'm Shelly the turtle. I will help you learn to use an ATM.",'¡Hola! Soy Shelly, la tortuga. Te voy a ayudar a aprender a usar un cajero automático.'],
+  askName:['What is your first name?','¿Cuál es tu nombre?'],
+  go:["Let's go! ▶",'¡Vamos! ▶'],
+  readMe:['🔊 Read to me','🔊 Léeme'],
+  sounds:['🎵 Sounds','🎵 Sonidos'],
+  skip:['Skip, just play','Saltar y jugar'],
+  pick:['Pick a lesson. Shelly will help you!','Elige una lección. ¡Shelly te va a ayudar!'],
+  myShells:['🐚 My Shells:','🐚 Mis conchas:'],
+  step1:['Step 1','Paso 1'], learn:['Learn with Shelly','Aprende con Shelly'], inOrder:['Do these in order.','Hazlas en orden.'],
+  step2:['Step 2','Paso 2'], missions:['Missions','Misiones'], realLife:['Use the ATM in real life!','¡Usa el cajero en la vida real!'],
+  anyTime:['Any time','Cuando quieras'], freePlay:['Free Play','Juego libre'], tryAny:['Try anything you want.','Prueba lo que quieras.'],
+  freeAtm:['Free Play ATM','Cajero libre'], noRules:['No rules. Practice anything!','Sin reglas. ¡Practica lo que quieras!'],
+  map:['🗺️ Map','🗺️ Mapa'], read:['🔊 Read','🔊 Leer'], help:['💡 Help','💡 Ayuda'], next:['Next ▶','Siguiente ▶'],
+  wallet:['👛 My Wallet','👛 Mi cartera'],
+  bank:['🐢 TURTLE BANK','🐢 BANCO TORTUGA'], atmBadge:['ATM','CAJERO'],
+  tScreen:['SCREEN','PANTALLA'], tKeypad:['KEYPAD','TECLADO'], tCard:['CARD SLOT','RANURA DE TARJETA'], tReceipt:['RECEIPT SLOT','RANURA DEL RECIBO'], tCash:['CASH SLOT','RANURA DEL EFECTIVO'],
+  lCard:['CARD<br>SLOT','TARJETA'], lReceipt:['RECEIPT','RECIBO'], lCash:['CASH','EFECTIVO'],
+  myCard:['🐢 MY CARD','🐢 MI TARJETA'],
+  cover:['🖐️ Cover the keypad','🖐️ Tapa el teclado'],
+};
+const PH = {nameInput:['Type your name','Escribe tu nombre']};
+function applyStatic(){
+  const i = db.lang === 'es' ? 1 : 0;
+  $$('[data-i18n]').forEach(el => { const v = STATIC[el.dataset.i18n]; if (v) el.innerHTML = v[i]; });
+  Object.keys(PH).forEach(id => { const el = document.getElementById(id); if (el) el.placeholder = PH[id][i]; });
+  document.documentElement.lang = db.lang;
+  document.body.classList.toggle('lang-es', db.lang === 'es');
+  document.title = t('ATM Practice with Shelly', 'Practica el cajero con Shelly');
+  renderKeypad();
+}
 
 /* ================= turtle ================= */
 const TURTLE = `<svg class="turtle" viewBox="0 0 140 120" aria-hidden="true">
@@ -448,8 +496,8 @@ const TURTLE = `<svg class="turtle" viewBox="0 0 140 120" aria-hidden="true">
 ['#startTurtle','#mapTurtle','#coachTurtle'].forEach(s => $(s).innerHTML = TURTLE);
 const coachT = () => $('#coachTurtle .turtle');
 function mood(m){
-  const t = coachT(); if (!t) return;
-  t.classList.remove('happy','think'); if (m) t.classList.add(m);
+  const tt = coachT(); if (!tt) return;
+  tt.classList.remove('happy','think'); if (m) tt.classList.add(m);
   if (m === 'happy'){ const w = $('#coachTurtle'); w.classList.remove('hop'); void w.offsetWidth; w.classList.add('hop'); }
 }
 
@@ -474,26 +522,40 @@ const sfx = {
   whirr(){ tone(180,.35,'sawtooth',.025); tone(220,.3,'sawtooth',.02,.1); },
   win(){ [523,659,784,1047].forEach((f,i)=>tone(f,.22,'sine',.09,i*.13)); },
 };
-function plain(t){ return String(t).replace(/<[^>]+>/g,' ').replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu,'').replace(/\$(\d+)\.00/g,'$$$1').replace(/\s+/g,' ').trim(); }
-function speak(t){
+function plain(s){
+  let x = String(s).replace(/<[^>]+>/g,' ').replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu,'').replace(/\$(\d+)\.00/g,'$$$1');
+  if (db.lang === 'es') x = x.replace(/\$(\d+)/g, '$1 dólares').replace(/\bPIN\b/g, 'pin');
+  return x.replace(/\s+/g,' ').trim();
+}
+function pickVoice(){
+  try { const want = db.lang === 'es' ? 'es' : 'en'; const vs = speechSynthesis.getVoices();
+    return vs.find(v => v.lang === (want === 'es' ? 'es-US' : 'en-US')) || vs.find(v => v.lang.toLowerCase().startsWith(want)) || null;
+  } catch(e) { return null; }
+}
+function speak(s){
   try { if (!('speechSynthesis' in window)) return; speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(plain(t)); u.rate = 0.9; u.pitch = 1.1; speechSynthesis.speak(u);
+    const u = new SpeechSynthesisUtterance(plain(s)); u.rate = 0.9; u.pitch = 1.1;
+    u.lang = db.lang === 'es' ? 'es-US' : 'en-US'; const v = pickVoice(); if (v) u.voice = v;
+    speechSynthesis.speak(u);
   } catch(e) {}
 }
 function hush(){ try { speechSynthesis.cancel(); } catch(e) {} }
+try { speechSynthesis.getVoices(); } catch(e) {}
 
 /* ================= toggles ================= */
 function syncToggles(){
   $$('[data-toggle="read"]').forEach(b => b.setAttribute('aria-pressed', String(!!db.read)));
   $$('[data-toggle="sound"]').forEach(b => b.setAttribute('aria-pressed', String(!!db.sound)));
+  $$('[data-toggle="lang"]').forEach(b => { b.textContent = db.lang === 'es' ? '🌎 English' : '🌎 Español'; b.setAttribute('lang', db.lang === 'es' ? 'en' : 'es'); });
 }
 $$('[data-toggle]').forEach(b => b.addEventListener('click', () => {
-  const k = b.dataset.toggle; db[k] = !db[k]; save(); syncToggles();
-  if (k === 'read' && db.read) speak('Okay! I will read to you.');
+  const k = b.dataset.toggle;
+  if (k === 'lang'){ setLang(db.lang === 'es' ? 'en' : 'es'); return; }
+  db[k] = !db[k]; save(); syncToggles();
+  if (k === 'read' && db.read) speak(t('Okay! I will read to you.', '¡Muy bien! Te voy a leer.'));
   if (k === 'read' && !db.read) hush();
   if (k === 'sound' && db.sound) sfx.good();
 }));
-syncToggles();
 
 /* ================= views ================= */
 function show(id){ ['#start','#map','#play'].forEach(s => $(s).hidden = (s !== id)); window.scrollTo(0,0); }
@@ -507,171 +569,193 @@ $('#nameForm').addEventListener('submit', e => {
 $('#skipName').addEventListener('click', () => { student = ''; goMap(); });
 if (db.last) $('#nameInput').value = db.last;
 
-/* ================= CONTENT: lessons ================= */
+/* ================= CONTENT ================= */
 const PIN = '2468';
-const ins = (txt) => ({type:'do', text: txt || 'Tap your <b>card</b> in your wallet to put it in the ATM.', done:'card', hl:'#wCard', hint:'Tap your debit card. It is in your wallet.'});
-const cov = (txt) => ({type:'do', text: txt || 'Tap the <b>hand button</b> to cover the keypad.', done:'covered', allow:['cover'], hl:'#coverBtn', hint:'Tap the button that says Cover the keypad.'});
-const typePin = (txt) => ({type:'do', text: txt || `Type your PIN: <b>${spaced(PIN)}</b>. Then press the green <b>ENTER</b> button.`, done:'pin-ok', allow:['key:*','clear','enter','cover'], hl:'#keypad', hint:`Your PIN is ${spaced(PIN)}. It is on the yellow note. Then press green ENTER.`});
-const takeCard = (txt) => ({type:'do', text: txt || 'Take your card! Tap the card in the slot.', done:'take:card', hl:'#slotCard', hint:'Your card is sticking out of the card slot. Tap it!'});
+let LESSONS = [], MISSIONS = [], MENU_WORDS = {};
+function buildContent(){
+const ins = (txt) => ({type:'do', text: txt || t('Tap your <b>card</b> in your wallet to put it in the ATM.', 'Toca tu <b>tarjeta</b> en tu cartera para meterla en el cajero.'), done:'card', hl:'#wCard', hint:t('Tap your debit card. It is in your wallet.', 'Toca tu tarjeta de débito. Está en tu cartera.')});
+const cov = (txt) => ({type:'do', text: txt || t('Tap the <b>hand button</b> to cover the keypad.', 'Toca el <b>botón de la mano</b> para tapar el teclado.'), done:'covered', allow:['cover'], hl:'#coverBtn', hint:t('Tap the button that says Cover the keypad.', 'Toca el botón que dice Tapa el teclado.')});
+const covShort = () => cov(t('Cover the keypad.', 'Tapa el teclado.'));
+const typePin = () => ({type:'do', text: t(`Type your PIN: <b>${spaced(PIN)}</b>. Then press the green <b>ENTER</b> button.`, `Escribe tu PIN: <b>${spaced(PIN)}</b>. Luego presiona el botón verde <b>ENTRAR</b>.`), done:'pin-ok', allow:['key:*','clear','enter','cover'], hl:'#keypad', hint:t(`Your PIN is ${spaced(PIN)}. It is on the yellow note. Then press green ENTER.`, `Tu PIN es ${spaced(PIN)}. Está en la nota amarilla. Luego presiona el verde ENTRAR.`)});
+const takeCard = (txt) => ({type:'do', text: txt || t('Take your card! Tap the card in the slot.', '¡Saca tu tarjeta! Tócala en la ranura.'), done:'take:card', hl:'#slotCard', hint:t('Your card is sticking out of the card slot. Tap it!', 'Tu tarjeta está saliendo de la ranura de tarjeta. ¡Tócala!')});
+const tapNo = (txt) => ({type:'do', text:txt, done:'opt:no', hl:'[data-opt="no"]', hint:t('Tap No.', 'Toca No.')});
+const tapOk = () => ({type:'do', text:t('Tap <b>OK</b>.', 'Toca <b>OK</b>.'), done:'opt:ok', hl:'[data-opt="ok"]', hint:t('Tap OK on the screen.', 'Toca OK en la pantalla.')});
+const getCash = () => ({type:'do', text:t('Tap <b>Get Cash</b>.', 'Toca <b>Sacar dinero</b>.'), done:'opt:withdraw', hl:'[data-opt="withdraw"]', hint:t('Tap the button that says Get Cash.', 'Toca el botón que dice Sacar dinero.')});
 
-const LESSONS = [
- {id:'L1', icon:'🏧', title:'Meet the ATM', sub:'Learn the parts', explore:true, steps:[
-   {type:'tell', text:"Hi! I'm <b>Shelly</b>. This is an <b>ATM</b>. An ATM is a machine. It lets you get money from your bank account."},
-   {type:'tell', text:"Let's learn the parts of the ATM. Tap each part when I say it."},
-   {type:'part', text:'Tap the <b>SCREEN</b>. The screen shows words and buttons.', done:'part:screen', hl:'#screenWrap', hint:'The screen is the big blue part at the top.'},
-   {type:'part', text:'Tap the <b>CARD SLOT</b>. Your card goes in here.', done:'part:cardslot', hl:'#slotCard', hint:'Find the slot that says CARD SLOT.'},
-   {type:'part', text:'Tap the <b>KEYPAD</b>. You use it to type numbers.', done:'part:keypad', hl:'#kpWrap', hint:'The keypad has the numbers 1 to 9 and 0.'},
-   {type:'part', text:'Tap the <b>CASH SLOT</b>. Money comes out here!', done:'part:cash', hl:'#slotCash', hint:'Find the slot that says CASH.'},
-   {type:'part', text:'Tap the <b>RECEIPT SLOT</b>. A paper receipt comes out here.', done:'part:receipt', hl:'#slotReceipt', hint:'Find the slot that says RECEIPT.'},
-   {type:'tell', text:'Great! Now a quiz. No help this time. You can do it! 💪', clearTags:true},
-   {type:'part', text:'Tap the part where your <b>MONEY</b> comes out.', done:'part:cash', hint:'Money comes out of the CASH slot.', hintHl:'#slotCash'},
-   {type:'part', text:'Tap the part where you <b>TYPE NUMBERS</b>.', done:'part:keypad', hint:'You type numbers on the keypad.', hintHl:'#kpWrap'},
-   {type:'part', text:'Tap the part where your <b>CARD</b> goes.', done:'part:cardslot', hint:'Your card goes in the CARD SLOT.', hintHl:'#slotCard'},
-   {type:'tell', text:'You know all the parts of the ATM! 🎉'}
+LESSONS = [
+ {id:'L1', icon:'🏧', title:t('Meet the ATM','Conoce el cajero'), sub:t('Learn the parts','Aprende las partes'), explore:true, steps:[
+   {type:'tell', text:t("Hi! I'm <b>Shelly</b>. This is an <b>ATM</b>. An ATM is a machine. It lets you get money from your bank account.", '¡Hola! Soy <b>Shelly</b>. Este es un <b>cajero automático</b>. Es una máquina. Te deja sacar dinero de tu cuenta del banco.')},
+   {type:'tell', text:t("Let's learn the parts of the ATM. Tap each part when I say it.", 'Vamos a aprender las partes del cajero. Toca cada parte cuando yo la diga.')},
+   {type:'part', text:t('Tap the <b>SCREEN</b>. The screen shows words and buttons.', 'Toca la <b>PANTALLA</b>. La pantalla muestra palabras y botones.'), done:'part:screen', hl:'#screenWrap', hint:t('The screen is the big blue part at the top.', 'La pantalla es la parte azul grande de arriba.')},
+   {type:'part', text:t('Tap the <b>CARD SLOT</b>. Your card goes in here.', 'Toca la <b>RANURA DE TARJETA</b>. Aquí entra tu tarjeta.'), done:'part:cardslot', hl:'#slotCard', hint:t('Find the slot that says CARD SLOT.', 'Busca la ranura que dice TARJETA.')},
+   {type:'part', text:t('Tap the <b>KEYPAD</b>. You use it to type numbers.', 'Toca el <b>TECLADO</b>. Lo usas para escribir números.'), done:'part:keypad', hl:'#kpWrap', hint:t('The keypad has the numbers 1 to 9 and 0.', 'El teclado tiene los números del 1 al 9 y el 0.')},
+   {type:'part', text:t('Tap the <b>CASH SLOT</b>. Money comes out here!', 'Toca la <b>RANURA DEL EFECTIVO</b>. ¡Por aquí sale el dinero!'), done:'part:cash', hl:'#slotCash', hint:t('Find the slot that says CASH.', 'Busca la ranura que dice EFECTIVO.')},
+   {type:'part', text:t('Tap the <b>RECEIPT SLOT</b>. A paper receipt comes out here.', 'Toca la <b>RANURA DEL RECIBO</b>. Por aquí sale un recibo de papel.'), done:'part:receipt', hl:'#slotReceipt', hint:t('Find the slot that says RECEIPT.', 'Busca la ranura que dice RECIBO.')},
+   {type:'tell', text:t('Great! Now a quiz. No help this time. You can do it! 💪', '¡Muy bien! Ahora un examen. Esta vez sin ayuda. ¡Tú puedes! 💪'), clearTags:true},
+   {type:'part', text:t('Tap the part where your <b>MONEY</b> comes out.', 'Toca la parte por donde sale tu <b>DINERO</b>.'), done:'part:cash', hint:t('Money comes out of the CASH slot.', 'El dinero sale por la ranura del EFECTIVO.'), hintHl:'#slotCash'},
+   {type:'part', text:t('Tap the part where you <b>TYPE NUMBERS</b>.', 'Toca la parte donde <b>ESCRIBES NÚMEROS</b>.'), done:'part:keypad', hint:t('You type numbers on the keypad.', 'Escribes números en el teclado.'), hintHl:'#kpWrap'},
+   {type:'part', text:t('Tap the part where your <b>CARD</b> goes.', 'Toca la parte donde entra tu <b>TARJETA</b>.'), done:'part:cardslot', hint:t('Your card goes in the CARD SLOT.', 'Tu tarjeta entra en la RANURA DE TARJETA.'), hintHl:'#slotCard'},
+   {type:'tell', text:t('You know all the parts of the ATM! 🎉', '¡Ya conoces todas las partes del cajero! 🎉')}
  ]},
- {id:'L2', icon:'💳', title:'Put Your Card In', sub:'Card in, card out', setup:{balance:50}, steps:[
-   {type:'tell', text:'This is your <b>debit card</b>. It is in your wallet. Your card is connected to your bank account.', hl:'#wCard'},
+ {id:'L2', icon:'💳', title:t('Put Your Card In','Mete tu tarjeta'), sub:t('Card in, card out','Tarjeta adentro y afuera'), setup:{balance:50}, steps:[
+   {type:'tell', text:t('This is your <b>debit card</b>. It is in your wallet. Your card is connected to your bank account.', 'Esta es tu <b>tarjeta de débito</b>. Está en tu cartera. Tu tarjeta está conectada a tu cuenta del banco.'), hl:'#wCard'},
    ins(),
-   {type:'tell', text:'The ATM read your card! Now it wants your PIN. We will learn about the PIN next time.'},
-   {type:'tell', text:'The red <b>CANCEL</b> button stops everything. It gives your card back.', hl:'#kCancel'},
-   {type:'do', text:'Press the red <b>CANCEL</b> button.', done:'cancel', hl:'#kCancel', hint:'CANCEL is the red button on the keypad.'},
-   takeCard('Here comes your card! Tap it to take it back.'),
-   {type:'tell', text:'Never leave your card in the ATM. Always take it with you!'},
-   ins("Let's practice again! Put your <b>card</b> in."),
-   {type:'do', text:'Press the red <b>CANCEL</b> button.', done:'cancel', hl:'#kCancel', hint:'CANCEL is the red button.'},
+   {type:'tell', text:t('The ATM read your card! Now it wants your PIN. We will learn about the PIN next time.', '¡El cajero leyó tu tarjeta! Ahora quiere tu PIN. Vamos a aprender sobre el PIN la próxima vez.')},
+   {type:'tell', text:t('The red <b>CANCEL</b> button stops everything. It gives your card back.', 'El botón rojo <b>CANCELAR</b> detiene todo. Te devuelve tu tarjeta.'), hl:'#kCancel'},
+   {type:'do', text:t('Press the red <b>CANCEL</b> button.', 'Presiona el botón rojo <b>CANCELAR</b>.'), done:'cancel', hl:'#kCancel', hint:t('CANCEL is the red button on the keypad.', 'CANCELAR es el botón rojo del teclado.')},
+   takeCard(t('Here comes your card! Tap it to take it back.', '¡Aquí viene tu tarjeta! Tócala para sacarla.')),
+   {type:'tell', text:t('Never leave your card in the ATM. Always take it with you!', 'Nunca dejes tu tarjeta en el cajero. ¡Siempre llévatela!')},
+   ins(t("Let's practice again! Put your <b>card</b> in.", '¡Vamos a practicar otra vez! Mete tu <b>tarjeta</b>.')),
+   {type:'do', text:t('Press the red <b>CANCEL</b> button.', 'Presiona el botón rojo <b>CANCELAR</b>.'), done:'cancel', hl:'#kCancel', hint:t('CANCEL is the red button.', 'CANCELAR es el botón rojo.')},
    takeCard(),
-   {type:'tell', text:'Great job! You put your card in and took it back. 💳'}
+   {type:'tell', text:t('Great job! You put your card in and took it back. 💳', '¡Muy bien! Metiste tu tarjeta y la sacaste. 💳')}
  ]},
- {id:'L3', icon:'🔢', title:'Your Secret PIN', sub:'Cover, type, ENTER', setup:{balance:50}, steps:[
-   {type:'tell', text:'A <b>PIN</b> is a secret number. It has 4 numbers. It is like a password for your card.'},
-   {type:'ask', q:'Who should know your PIN?', pic:'🤫', choices:['Only me (and a grown-up I trust at home)','My friends at school','Anyone who asks'], answer:0, explain:'Right! Keep your PIN a secret.'},
-   {type:'tell', text:`Your practice PIN is on the yellow note in your wallet. It is <b>${spaced(PIN)}</b>.`, hl:'#wPin'},
-   ins('Put your <b>card</b> in.'),
-   {type:'tell', text:'Before you type your PIN, cover the keypad with your hand. Then no one can see it!'},
+ {id:'L3', icon:'🔢', title:t('Your Secret PIN','Tu PIN secreto'), sub:t('Cover, type, ENTER','Tapa, escribe, ENTRAR'), setup:{balance:50}, steps:[
+   {type:'tell', text:t('A <b>PIN</b> is a secret number. It has 4 numbers. It is like a password for your card.', 'Un <b>PIN</b> es un número secreto. Tiene 4 números. Es como una contraseña para tu tarjeta.')},
+   {type:'ask', q:t('Who should know your PIN?', '¿Quién debe saber tu PIN?'), pic:'🤫', choices:t(['Only me (and a grown-up I trust at home)','My friends at school','Anyone who asks'], ['Solo yo (y un adulto de confianza en casa)','Mis amigos de la escuela','Cualquier persona que pregunte']), answer:0, explain:t('Right! Keep your PIN a secret.', '¡Correcto! Tu PIN es un secreto.')},
+   {type:'tell', text:t(`Your practice PIN is on the yellow note in your wallet. It is <b>${spaced(PIN)}</b>.`, `Tu PIN de práctica está en la nota amarilla de tu cartera. Es <b>${spaced(PIN)}</b>.`), hl:'#wPin'},
+   ins(t('Put your <b>card</b> in.', 'Mete tu <b>tarjeta</b>.')),
+   {type:'tell', text:t('Before you type your PIN, cover the keypad with your hand. Then no one can see it!', 'Antes de escribir tu PIN, tapa el teclado con tu mano. ¡Así nadie lo puede ver!')},
    cov(),
-   {type:'tell', text:'Sometimes we press the wrong number. The yellow <b>CLEAR</b> button erases it. Let\'s practice!', hl:'#kClear'},
-   {type:'do', text:'Press <b>any number</b> on the keypad.', done:'key:*', allow:['cover'], hl:'#keypad', hint:'Tap any number key.'},
-   {type:'do', text:'Now press the yellow <b>CLEAR</b> button to erase it.', done:'clear', hl:'#kClear', hint:'CLEAR is the yellow button.'},
+   {type:'tell', text:t("Sometimes we press the wrong number. The yellow <b>CLEAR</b> button erases it. Let's practice!", 'A veces presionamos el número equivocado. El botón amarillo <b>BORRAR</b> lo borra. ¡Vamos a practicar!'), hl:'#kClear'},
+   {type:'do', text:t('Press <b>any number</b> on the keypad.', 'Presiona <b>cualquier número</b> en el teclado.'), done:'key:*', allow:['cover'], hl:'#keypad', hint:t('Tap any number key.', 'Toca cualquier número.')},
+   {type:'do', text:t('Now press the yellow <b>CLEAR</b> button to erase it.', 'Ahora presiona el botón amarillo <b>BORRAR</b> para borrarlo.'), done:'clear', hl:'#kClear', hint:t('CLEAR is the yellow button.', 'BORRAR es el botón amarillo.')},
    typePin(),
-   {type:'tell', text:'You did it! The ATM shows the <b>menu</b>. These are the things you can do.'},
-   {type:'do', text:"Tap <b>I'm Done</b> to finish.", done:'opt:done', hl:'[data-opt="done"]', hint:"Tap the button that says I'm Done."},
+   {type:'tell', text:t('You did it! The ATM shows the <b>menu</b>. These are the things you can do.', '¡Lo hiciste! El cajero muestra el <b>menú</b>. Estas son las cosas que puedes hacer.')},
+   {type:'do', text:t("Tap <b>I'm Done</b> to finish.", 'Toca <b>Terminé</b> para terminar.'), done:'opt:done', hl:'[data-opt="done"]', hint:t("Tap the button that says I'm Done.", 'Toca el botón que dice Terminé.')},
    takeCard(),
-   {type:'tell', text:'Super! Remember: <b>cover, type, ENTER</b>. 🔒'}
+   {type:'tell', text:t('Super! Remember: <b>cover, type, ENTER</b>. 🔒', '¡Súper! Recuerda: <b>tapa, escribe, ENTRAR</b>. 🔒')}
  ]},
- {id:'L4', icon:'💰', title:'Check Your Balance', sub:'How much money?', setup:{balance:42}, steps:[
-   {type:'tell', text:'Your <b>balance</b> is how much money is in your bank account. Let\'s check it!'},
-   ins(), cov('Cover the keypad.'), typePin(),
-   {type:'do', text:'Tap <b>Check Balance</b>.', done:'opt:balance', hl:'[data-opt="balance"]', hint:'Tap the button that says Check Balance.'},
-   {type:'ask', where:'bubble', q:'Look at the screen. How much money is in the account?', choices:['$42.00','$24.00','$4.20'], answer:0, hint:'Look at the big yellow number on the screen.'},
-   {type:'do', text:'Tap <b>OK</b>.', done:'opt:ok', hl:'[data-opt="ok"]', hint:'Tap OK on the screen.'},
-   {type:'tell', text:'The ATM asks: Do you want a <b>receipt</b>? A receipt is a paper that shows what you did.'},
-   {type:'do', text:'Tap <b>No</b>. We do not need one today.', done:'opt:no', hl:'[data-opt="no"]', hint:'Tap No.'},
-   {type:'do', text:'The ATM asks if you want to do something else. Tap <b>No</b>.', done:'opt:no', hl:'[data-opt="no"]', hint:'Tap No.'},
+ {id:'L4', icon:'💰', title:t('Check Your Balance','Ver tu saldo'), sub:t('How much money?','¿Cuánto dinero hay?'), setup:{balance:42}, steps:[
+   {type:'tell', text:t("Your <b>balance</b> is how much money is in your bank account. Let's check it!", 'Tu <b>saldo</b> es cuánto dinero hay en tu cuenta del banco. ¡Vamos a verlo!')},
+   ins(), covShort(), typePin(),
+   {type:'do', text:t('Tap <b>Check Balance</b>.', 'Toca <b>Ver saldo</b>.'), done:'opt:balance', hl:'[data-opt="balance"]', hint:t('Tap the button that says Check Balance.', 'Toca el botón que dice Ver saldo.')},
+   {type:'ask', where:'bubble', q:t('Look at the screen. How much money is in the account?', 'Mira la pantalla. ¿Cuánto dinero hay en la cuenta?'), choices:['$42.00','$24.00','$4.20'], answer:0, hint:t('Look at the big yellow number on the screen.', 'Mira el número amarillo grande en la pantalla.')},
+   tapOk(),
+   {type:'tell', text:t('The ATM asks: Do you want a <b>receipt</b>? A receipt is a paper that shows what you did.', 'El cajero pregunta: ¿Quieres un <b>recibo</b>? Un recibo es un papel que muestra lo que hiciste.')},
+   tapNo(t('Tap <b>No</b>. We do not need one today.', 'Toca <b>No</b>. Hoy no lo necesitamos.')),
+   tapNo(t('The ATM asks if you want to do something else. Tap <b>No</b>.', 'El cajero pregunta si quieres hacer algo más. Toca <b>No</b>.')),
    takeCard(),
-   {type:'tell', text:'Awesome! You checked your balance. 💰'}
+   {type:'tell', text:t('Awesome! You checked your balance. 💰', '¡Genial! Viste tu saldo. 💰')}
  ]},
- {id:'L5', icon:'💵', title:'Get Cash', sub:'Take out $20', setup:{balance:100}, steps:[
-   {type:'tell', text:'Taking money out is called a <b>withdrawal</b>. Let\'s get $20!'},
-   ins(), cov('Cover the keypad.'), typePin(),
-   {type:'do', text:'Tap <b>Get Cash</b>.', done:'opt:withdraw', hl:'[data-opt="withdraw"]', hint:'Tap the button that says Get Cash.'},
-   {type:'tell', text:'This ATM gives <b>$20 bills</b>. You pick how much money you want.'},
-   {type:'do', text:'Tap <b>$20</b>.', done:'opt:a20', hl:'[data-opt="a20"]', hint:'Tap the button that says $20.'},
-   {type:'do', text:'Do you want a receipt? Tap <b>Yes</b> this time.', done:'opt:yes', hl:'[data-opt="yes"]', hint:'Tap Yes.'},
-   {type:'do', text:'Do you want to do something else? Tap <b>No</b>. We are done.', done:'opt:no', hl:'[data-opt="no"]', hint:'Tap No.'},
-   {type:'tell', text:'Now the ATM gives you <b>3 things</b>: your card, your cash, and your receipt. Take them all!'},
-   takeCard('First, take your <b>card</b>!'),
-   {type:'do', text:'Now take your <b>cash</b>!', done:'take:cash', hl:'#slotCash', hint:'Your money is in the CASH slot. Tap it!'},
-   {type:'do', text:'Last, take your <b>receipt</b>!', done:'take:receipt', hl:'#slotReceipt', hint:'The paper is in the RECEIPT slot. Tap it!'},
-   {type:'ask', q:'What 3 things do you take from the ATM?', pic:'💳 💵 🧾', choices:['Card, cash, and receipt','Card, keypad, and screen','Just the cash'], answer:0, explain:'Yes! Card, cash, receipt. Never leave them behind!'},
-   {type:'tell', text:'Your $20 is in your wallet. You can tap your receipt to read it! 💵', hl:'#walletBox'}
+ {id:'L5', icon:'💵', title:t('Get Cash','Sacar dinero'), sub:t('Take out $20','Saca $20'), setup:{balance:100}, steps:[
+   {type:'tell', text:t("Taking money out is called a <b>withdrawal</b>. Let's get $20!", 'Sacar dinero del banco se llama un <b>retiro</b>. ¡Vamos a sacar $20!')},
+   ins(), covShort(), typePin(),
+   getCash(),
+   {type:'tell', text:t('This ATM gives <b>$20 bills</b>. You pick how much money you want.', 'Este cajero da <b>billetes de $20</b>. Tú eliges cuánto dinero quieres.')},
+   {type:'do', text:t('Tap <b>$20</b>.', 'Toca <b>$20</b>.'), done:'opt:a20', hl:'[data-opt="a20"]', hint:t('Tap the button that says $20.', 'Toca el botón que dice $20.')},
+   {type:'do', text:t('Do you want a receipt? Tap <b>Yes</b> this time.', '¿Quieres un recibo? Esta vez toca <b>Sí</b>.'), done:'opt:yes', hl:'[data-opt="yes"]', hint:t('Tap Yes.', 'Toca Sí.')},
+   tapNo(t('Do you want to do something else? Tap <b>No</b>. We are done.', '¿Quieres hacer algo más? Toca <b>No</b>. Ya terminamos.')),
+   {type:'tell', text:t('Now the ATM gives you <b>3 things</b>: your card, your cash, and your receipt. Take them all!', 'Ahora el cajero te da <b>3 cosas</b>: tu tarjeta, tu dinero y tu recibo. ¡Sácalas todas!')},
+   takeCard(t('First, take your <b>card</b>!', 'Primero, ¡saca tu <b>tarjeta</b>!')),
+   {type:'do', text:t('Now take your <b>cash</b>!', '¡Ahora saca tu <b>dinero</b>!'), done:'take:cash', hl:'#slotCash', hint:t('Your money is in the CASH slot. Tap it!', 'Tu dinero está en la ranura del EFECTIVO. ¡Tócalo!')},
+   {type:'do', text:t('Last, take your <b>receipt</b>!', 'Por último, ¡saca tu <b>recibo</b>!'), done:'take:receipt', hl:'#slotReceipt', hint:t('The paper is in the RECEIPT slot. Tap it!', 'El papel está en la ranura del RECIBO. ¡Tócalo!')},
+   {type:'ask', q:t('What 3 things do you take from the ATM?', '¿Qué 3 cosas sacas del cajero?'), pic:'💳 💵 🧾', choices:t(['Card, cash, and receipt','Card, keypad, and screen','Just the cash'], ['Tarjeta, dinero y recibo','Tarjeta, teclado y pantalla','Solo el dinero']), answer:0, explain:t('Yes! Card, cash, receipt. Never leave them behind!', '¡Sí! Tarjeta, dinero, recibo. ¡Nunca los dejes!')},
+   {type:'tell', text:t('Your $20 is in your wallet. You can tap your receipt to read it! 💵', 'Tus $20 están en tu cartera. ¡Puedes tocar tu recibo para leerlo! 💵'), hl:'#walletBox'}
  ]},
- {id:'L6', icon:'⌨️', title:'Other Amounts', sub:'Type how much', setup:{balance:150}, steps:[
-   {type:'tell', text:'What if you want <b>$80</b>? There is no $80 button. You can type it!'},
-   ins(), cov('Cover the keypad.'), typePin(),
-   {type:'do', text:'Tap <b>Get Cash</b>.', done:'opt:withdraw', hl:'[data-opt="withdraw"]', hint:'Tap Get Cash.'},
-   {type:'do', text:'Tap <b>Other Amount</b>.', done:'opt:other', hl:'[data-opt="other"]', hint:'Tap the button that says Other Amount.'},
-   {type:'do', text:'Type <b>8</b> and then <b>0</b>. Then press green <b>ENTER</b>.', done:'withdraw:80', allow:['key:*','clear','enter'], hl:'#keypad', hint:'Type 8, then 0. If you make a mistake, press yellow CLEAR.', block:(k)=> k==='enter' && atm.amtBuf!=='80' ? {msg:`You typed $${atm.amtBuf||0}. We want $80. Press yellow CLEAR and type 8, 0.`, hl:'#kClear'} : null},
-   {type:'do', text:'Do you want a receipt? Tap <b>No</b>.', done:'opt:no', hl:'[data-opt="no"]', hint:'Tap No.'},
-   {type:'do', text:'Something else? Tap <b>No</b>.', done:'opt:no', hl:'[data-opt="no"]', hint:'Tap No.'},
+ {id:'L6', icon:'⌨️', title:t('Other Amounts','Otras cantidades'), sub:t('Type how much','Escribe cuánto'), setup:{balance:150}, steps:[
+   {type:'tell', text:t('What if you want <b>$80</b>? There is no $80 button. You can type it!', '¿Y si quieres <b>$80</b>? No hay un botón de $80. ¡Lo puedes escribir!')},
+   ins(), covShort(), typePin(),
+   getCash(),
+   {type:'do', text:t('Tap <b>Other Amount</b>.', 'Toca <b>Otra cantidad</b>.'), done:'opt:other', hl:'[data-opt="other"]', hint:t('Tap the button that says Other Amount.', 'Toca el botón que dice Otra cantidad.')},
+   {type:'do', text:t('Type <b>8</b> and then <b>0</b>. Then press green <b>ENTER</b>.', 'Escribe <b>8</b> y luego <b>0</b>. Luego presiona el verde <b>ENTRAR</b>.'), done:'withdraw:80', allow:['key:*','clear','enter'], hl:'#keypad', hint:t('Type 8, then 0. If you make a mistake, press yellow CLEAR.', 'Escribe 8 y luego 0. Si te equivocas, presiona el amarillo BORRAR.'),
+     block:(k)=> k==='enter' && atm.amtBuf!=='80' ? {msg:t(`You typed $${atm.amtBuf||0}. We want $80. Press yellow CLEAR and type 8, 0.`, `Escribiste $${atm.amtBuf||0}. Queremos $80. Presiona el amarillo BORRAR y escribe 8, 0.`), hl:'#kClear'} : null},
+   tapNo(t('Do you want a receipt? Tap <b>No</b>.', '¿Quieres un recibo? Toca <b>No</b>.')),
+   tapNo(t('Something else? Tap <b>No</b>.', '¿Algo más? Toca <b>No</b>.')),
    takeCard(),
-   {type:'do', text:'Take your <b>cash</b>!', done:'take:cash', hl:'#slotCash', hint:'Tap the money in the CASH slot.'},
-   {type:'ask', q:'The ATM gives $20 bills. Which amount can you type?', pic:'💵', choices:['$60','$55','$15'], answer:0, explain:'Yes! 20, 40, 60, 80, 100... You can only get $20 bills.'},
-   {type:'tell', text:'Great typing! You got $80. ⌨️'}
+   {type:'do', text:t('Take your <b>cash</b>!', '¡Saca tu <b>dinero</b>!'), done:'take:cash', hl:'#slotCash', hint:t('Tap the money in the CASH slot.', 'Toca el dinero en la ranura del EFECTIVO.')},
+   {type:'ask', q:t('The ATM gives $20 bills. Which amount can you type?', 'El cajero da billetes de $20. ¿Qué cantidad puedes escribir?'), pic:'💵', choices:['$60','$55','$15'], answer:0, explain:t('Yes! 20, 40, 60, 80, 100... You can only get $20 bills.', '¡Sí! 20, 40, 60, 80, 100... Solo puedes sacar billetes de $20.')},
+   {type:'tell', text:t('Great typing! You got $80. ⌨️', '¡Muy bien escrito! Sacaste $80. ⌨️')}
  ]},
- {id:'L7', icon:'🏦', title:'Put Money In', sub:'Make a deposit', setup:{balance:40, bills:[20,10]}, steps:[
-   {type:'tell', text:'Putting money in the bank is called a <b>deposit</b>. It keeps your money safe.'},
-   {type:'tell', text:'You have $30 in your wallet. Let\'s put it in the bank!', hl:'#walletBox'},
-   ins(), cov('Cover the keypad.'), typePin(),
-   {type:'do', text:'Tap <b>Deposit</b>.', done:'opt:deposit', hl:'[data-opt="deposit"]', hint:'Tap the button that says Deposit.'},
-   {type:'do', text:'Tap the <b>$20 bill</b> in your wallet to put it in.', done:'bill:20', hl:'[data-bill="20"]', hint:'The $20 bill is in your wallet. Tap it!'},
-   {type:'do', text:'Now tap the <b>$10 bill</b>.', done:'bill:10', hl:'[data-bill="10"]', hint:'Tap the $10 bill in your wallet.'},
-   {type:'ask', where:'bubble', q:'How much did you put in? $20 + $10 = ?', choices:['$30','$210','$10'], answer:0, hint:'Count it: 20, then 10 more. 20 + 10 = 30.'},
-   {type:'do', text:'Tap <b>Done</b>.', done:'opt:ddone', hl:'[data-opt="ddone"]', hint:'Tap Done on the screen.'},
-   {type:'do', text:'The ATM counted $30. That is right! Tap <b>Yes</b>.', done:'opt:yes', hl:'[data-opt="yes"]', hint:'Tap Yes.'},
-   {type:'ask', where:'bubble', q:'Look at the screen. What is your new balance?', choices:['$70.00','$40.00','$30.00'], answer:0, hint:'You had $40. You added $30. Look at the big yellow number.'},
-   {type:'do', text:'Tap <b>OK</b>.', done:'opt:ok', hl:'[data-opt="ok"]', hint:'Tap OK.'},
-   {type:'do', text:'Receipt? Tap <b>No</b>.', done:'opt:no', hl:'[data-opt="no"]', hint:'Tap No.'},
-   {type:'do', text:'Something else? Tap <b>No</b>.', done:'opt:no', hl:'[data-opt="no"]', hint:'Tap No.'},
+ {id:'L7', icon:'🏦', title:t('Put Money In','Meter dinero'), sub:t('Make a deposit','Haz un depósito'), setup:{balance:40, bills:[20,10]}, steps:[
+   {type:'tell', text:t('Putting money in the bank is called a <b>deposit</b>. It keeps your money safe.', 'Meter dinero en el banco se llama un <b>depósito</b>. Así tu dinero está seguro.')},
+   {type:'tell', text:t("You have $30 in your wallet. Let's put it in the bank!", 'Tienes $30 en tu cartera. ¡Vamos a meterlo en el banco!'), hl:'#walletBox'},
+   ins(), covShort(), typePin(),
+   {type:'do', text:t('Tap <b>Deposit</b>.', 'Toca <b>Depositar</b>.'), done:'opt:deposit', hl:'[data-opt="deposit"]', hint:t('Tap the button that says Deposit.', 'Toca el botón que dice Depositar.')},
+   {type:'do', text:t('Tap the <b>$20 bill</b> in your wallet to put it in.', 'Toca el <b>billete de $20</b> en tu cartera para meterlo.'), done:'bill:20', hl:'[data-bill="20"]', hint:t('The $20 bill is in your wallet. Tap it!', 'El billete de $20 está en tu cartera. ¡Tócalo!')},
+   {type:'do', text:t('Now tap the <b>$10 bill</b>.', 'Ahora toca el <b>billete de $10</b>.'), done:'bill:10', hl:'[data-bill="10"]', hint:t('Tap the $10 bill in your wallet.', 'Toca el billete de $10 en tu cartera.')},
+   {type:'ask', where:'bubble', q:t('How much did you put in? $20 + $10 = ?', '¿Cuánto metiste? $20 + $10 = ?'), choices:['$30','$210','$10'], answer:0, hint:t('Count it: 20, then 10 more. 20 + 10 = 30.', 'Cuenta: 20, y 10 más. 20 + 10 = 30.')},
+   {type:'do', text:t('Tap <b>Done</b>.', 'Toca <b>Listo</b>.'), done:'opt:ddone', hl:'[data-opt="ddone"]', hint:t('Tap Done on the screen.', 'Toca Listo en la pantalla.')},
+   {type:'do', text:t('The ATM counted $30. That is right! Tap <b>Yes</b>.', 'El cajero contó $30. ¡Es correcto! Toca <b>Sí</b>.'), done:'opt:yes', hl:'[data-opt="yes"]', hint:t('Tap Yes.', 'Toca Sí.')},
+   {type:'ask', where:'bubble', q:t('Look at the screen. What is your new balance?', 'Mira la pantalla. ¿Cuál es tu nuevo saldo?'), choices:['$70.00','$40.00','$30.00'], answer:0, hint:t('You had $40. You added $30. Look at the big yellow number.', 'Tenías $40. Metiste $30. Mira el número amarillo grande.')},
+   tapOk(),
+   tapNo(t('Receipt? Tap <b>No</b>.', '¿Recibo? Toca <b>No</b>.')),
+   tapNo(t('Something else? Tap <b>No</b>.', '¿Algo más? Toca <b>No</b>.')),
    takeCard(),
-   {type:'tell', text:'Your money is safe in the bank! 🏦'}
+   {type:'tell', text:t('Your money is safe in the bank! 🏦', '¡Tu dinero está seguro en el banco! 🏦')}
  ]},
- {id:'L8', icon:'🛡️', title:'Stay Safe', sub:'Safe or not safe?', noAtm:true, steps:[
-   {type:'tell', text:'Let\'s learn how to stay safe at the ATM. I will show you a choice. Is it a good choice?'},
-   {type:'ask', yesno:true, q:'Cover the keypad when you type your PIN. Good choice?', pic:'🖐️🔢', answer:0, explain:'Yes! Covering the keypad keeps your PIN secret.'},
-   {type:'ask', yesno:true, q:'Tell your friend your PIN. Good choice?', pic:'🗣️🔢', answer:1, explain:'Right. Your PIN is a secret. Do not tell friends.'},
-   {type:'ask', yesno:true, q:'A stranger says, "I can help you with the ATM." Should you let them?', pic:'🧍❓', answer:1, explain:'Right! Say "No, thank you." Ask a grown-up you trust or a bank worker.'},
-   {type:'ask', yesno:true, q:'Look around before you use the ATM. Good choice?', pic:'👀', answer:0, explain:'Yes! Make sure no one is standing too close.'},
-   {type:'ask', yesno:true, q:'Write your PIN on your card. Good choice?', pic:'✏️💳', answer:1, explain:'Right. If you lose your card, someone could use it!'},
-   {type:'ask', yesno:true, q:'Put your money in your wallet before you walk away. Good choice?', pic:'💵👛', answer:0, explain:'Yes! Put your money away right at the ATM.'},
-   {type:'ask', yesno:true, q:'The ATM kept your card! Tell a grown-up you trust and call the bank. Good choice?', pic:'☎️🏦', answer:0, explain:'Yes! The bank can help you get a new card.'},
-   {type:'tell', text:'You are an ATM safety star! 🛡️⭐'}
+ {id:'L8', icon:'🛡️', title:t('Stay Safe','Cuídate'), sub:t('Safe or not safe?','¿Buena idea o no?'), noAtm:true, steps:[
+   {type:'tell', text:t("Let's learn how to stay safe at the ATM. I will show you a choice. Is it a good choice?", 'Vamos a aprender a cuidarnos en el cajero. Te voy a mostrar una decisión. ¿Es una buena idea?')},
+   {type:'ask', yesno:true, q:t('Cover the keypad when you type your PIN. Good choice?', 'Tapar el teclado cuando escribes tu PIN. ¿Buena idea?'), pic:'🖐️🔢', answer:0, explain:t('Yes! Covering the keypad keeps your PIN secret.', '¡Sí! Tapar el teclado mantiene tu PIN en secreto.')},
+   {type:'ask', yesno:true, q:t('Tell your friend your PIN. Good choice?', 'Decirle tu PIN a tu amigo. ¿Buena idea?'), pic:'🗣️🔢', answer:1, explain:t('Right. Your PIN is a secret. Do not tell friends.', 'Correcto. Tu PIN es un secreto. No se lo digas a tus amigos.')},
+   {type:'ask', yesno:true, q:t('A stranger says, "I can help you with the ATM." Should you let them?', 'Un desconocido dice: "Te puedo ayudar con el cajero." ¿Lo dejas?'), pic:'🧍❓', answer:1, explain:t('Right! Say "No, thank you." Ask a grown-up you trust or a bank worker.', '¡Correcto! Di: "No, gracias." Pide ayuda a un adulto de confianza o a alguien que trabaje en el banco.')},
+   {type:'ask', yesno:true, q:t('Look around before you use the ATM. Good choice?', 'Mirar a tu alrededor antes de usar el cajero. ¿Buena idea?'), pic:'👀', answer:0, explain:t('Yes! Make sure no one is standing too close.', '¡Sí! Asegúrate de que nadie esté muy cerca.')},
+   {type:'ask', yesno:true, q:t('Write your PIN on your card. Good choice?', 'Escribir tu PIN en tu tarjeta. ¿Buena idea?'), pic:'✏️💳', answer:1, explain:t('Right. If you lose your card, someone could use it!', 'Correcto. ¡Si pierdes tu tarjeta, alguien la podría usar!')},
+   {type:'ask', yesno:true, q:t('Put your money in your wallet before you walk away. Good choice?', 'Guardar tu dinero en tu cartera antes de irte. ¿Buena idea?'), pic:'💵👛', answer:0, explain:t('Yes! Put your money away right at the ATM.', '¡Sí! Guarda tu dinero ahí mismo, en el cajero.')},
+   {type:'ask', yesno:true, q:t('The ATM kept your card! Tell a grown-up you trust and call the bank. Good choice?', '¡El cajero se quedó con tu tarjeta! Díselo a un adulto de confianza y llama al banco. ¿Buena idea?'), pic:'☎️🏦', answer:0, explain:t('Yes! The bank can help you get a new card.', '¡Sí! El banco te puede ayudar a tener una tarjeta nueva.')},
+   {type:'tell', text:t('You are an ATM safety star! 🛡️⭐', '¡Eres una estrella de la seguridad en el cajero! 🛡️⭐')}
  ]},
- {id:'L9', icon:'🧾', title:'Read a Receipt', sub:'What does it say?', noAtm:true, steps:[
-   {type:'tell', text:'A <b>receipt</b> shows what you did at the ATM. Let\'s read one together!'},
-   {type:'ask', q:'How much cash did you get?', receipt:'sample', choices:['$40.00','$160.00','$4.00'], answer:0, hint:'Look for the words CASH WITHDRAWAL.', explain:'Yes! The receipt says you got $40.00.'},
-   {type:'ask', q:'How much money is left in the account?', receipt:'sample', choices:['$160.00','$40.00','$200.00'], answer:0, hint:'Look for the word BALANCE.', explain:'Yes! $160.00 is left.'},
-   {type:'ask', q:'What is the name of the bank?', receipt:'sample', choices:['Turtle Bank','Fish Bank','Shark Bank'], answer:0, hint:'Look at the top of the receipt.'},
-   {type:'ask', q:'What should you do with your receipt?', pic:'🧾', choices:['Keep it, or put it in the trash','Throw it on the ground','Give it to a stranger'], answer:0, explain:'Yes! Keep it safe, or throw it in the trash.'},
-   {type:'tell', text:'You can read a receipt! 🧾'}
+ {id:'L9', icon:'🧾', title:t('Read a Receipt','Leer un recibo'), sub:t('What does it say?','¿Qué dice?'), noAtm:true, steps:[
+   {type:'tell', text:t("A <b>receipt</b> shows what you did at the ATM. Let's read one together!", 'Un <b>recibo</b> muestra lo que hiciste en el cajero. ¡Vamos a leer uno juntos!')},
+   {type:'ask', q:t('How much cash did you get?', '¿Cuánto dinero sacaste?'), receipt:'sample', choices:['$40.00','$160.00','$4.00'], answer:0, hint:t('Look for the words CASH WITHDRAWAL.', 'Busca las palabras RETIRO DE EFECTIVO.'), explain:t('Yes! The receipt says you got $40.00.', '¡Sí! El recibo dice que sacaste $40.00.')},
+   {type:'ask', q:t('How much money is left in the account?', '¿Cuánto dinero queda en la cuenta?'), receipt:'sample', choices:['$160.00','$40.00','$200.00'], answer:0, hint:t('Look for the word BALANCE.', 'Busca la palabra SALDO.'), explain:t('Yes! $160.00 is left.', '¡Sí! Quedan $160.00.')},
+   {type:'ask', q:t('What is the name of the bank?', '¿Cómo se llama el banco?'), receipt:'sample', choices:t(['Turtle Bank','Fish Bank','Shark Bank'], ['Banco Tortuga','Banco Pez','Banco Tiburón']), answer:0, hint:t('Look at the top of the receipt.', 'Mira arriba del recibo.')},
+   {type:'ask', q:t('What should you do with your receipt?', '¿Qué debes hacer con tu recibo?'), pic:'🧾', choices:t(['Keep it, or put it in the trash','Throw it on the ground','Give it to a stranger'], ['Guardarlo o echarlo a la basura','Tirarlo al suelo','Dárselo a un desconocido']), answer:0, explain:t('Yes! Keep it safe, or throw it in the trash.', '¡Sí! Guárdalo bien o échalo a la basura.')},
+   {type:'tell', text:t('You can read a receipt! 🧾', '¡Ya sabes leer un recibo! 🧾')}
  ]}
 ];
 
-/* ================= CONTENT: missions ================= */
-const MENU_WORDS = {balance:'Check Balance', withdraw:'Get Cash', deposit:'Deposit', done:"I'm Done"};
-const MISSIONS = [
- {id:'M1', icon:'🥪', title:'Lunch Money', sub:'Get $20', pin:'1357', setup:{balance:85},
-  story:'You are hungry! Lunch costs $20.', goal:'Get $20 from the ATM.',
-  plan:[{do:'withdraw', amount:20, label:'Get $20'}]},
- {id:'M2', icon:'🎂', title:'Birthday Money', sub:'Deposit $30', pin:'2580', setup:{balance:25, bills:[20,10,5]},
-  story:'Grandma gave you money for your birthday! You have $35.', goal:'Put $30 in the bank. Keep $5 for a snack.',
-  plan:[{do:'deposit', amount:30, label:'Deposit $30'}],
-  after:[{q:'How much money is still in your wallet?', pic:'👛', choices:['$5','$35','$30'], answer:0, hint:'You put $30 in the bank. You kept one bill.', explain:'Yes! You kept $5 for a snack.'}]},
- {id:'M3', icon:'👕', title:'Shirt Shopping', sub:'Check balance', pin:'4826', setup:{balance:42},
-  story:'You want a new shirt. It costs $15.', goal:'Check your balance. Do you have enough money?',
-  plan:[{do:'balance', label:'Check your balance'}],
-  asks:[{on:'opt:balance', where:'bubble', q:'Your balance is $42. The shirt costs $15. Do you have enough money?', yesno:true, answer:0, hint:'Is 42 more than 15?', explain:'Yes! $42 is more than $15.'}]},
- {id:'M4', icon:'🎬', title:'Movie Night', sub:'Get enough cash', pin:'9137', setup:{balance:90},
-  story:'A movie ticket costs $25. The ATM only gives $20 bills.', goal:'Get the smallest amount that is enough for $25.',
-  plan:[{do:'withdraw', amount:40, label:'Get enough for $25',
-    hint:'$20 is not enough for $25. What is the next amount?',
-    check:(n)=> n===40 ? null : (n < 25 ? {msg:`$${n} is not enough for a $25 ticket. Pick a bigger amount.`} : {msg:`$${n} is more than you need. Pick the smallest amount that is enough.`})}]},
- {id:'M5', icon:'👟', title:'Not Enough Money', sub:'Uh oh!', pin:'3690', setup:{balance:35},
-  story:'You want new shoes. They cost $60.', goal:'Try to get $60 from the ATM.',
-  plan:[{do:'withdraw', amount:20, first:60, label:'Try to get $60',
-    nofundsMsg:'Uh oh! You only have $35. That is not enough for $60. Tap <b>Pick Again</b>. Get $20 and save up for the shoes!'}],
-  after:[{q:'Why did the ATM not give you $60?', pic:'🤔', choices:['There was not enough money in the account','The ATM was broken','I forgot my card'], answer:0, explain:'Right! You only had $35. You can save more money and buy the shoes later.'}]},
- {id:'M6', icon:'💼', title:'Payday!', sub:'Deposit your pay', pin:'7412', setup:{balance:60, bills:[20,20,10]}, receipt:'yes',
-  story:'You got paid $50 cash at your job! Great work!', goal:'Put all $50 in the bank. Get a receipt.',
-  plan:[{do:'deposit', amount:50, label:'Deposit $50'}],
-  asks:[{on:'deposit-ok', where:'bubble', q:'Look at the screen. What is your new balance?', choices:['$110.00','$50.00','$60.00'], answer:0, hint:'You had $60. You added $50.'}]},
- {id:'M7', icon:'🛒', title:'Grocery Run', sub:'Get $80', pin:'5203', setup:{balance:150},
-  story:'You need food from the grocery store.', goal:'Get $80. Hint: there is no $80 button!',
-  plan:[{do:'withdraw', amount:80, label:'Get $80'}]},
- {id:'M8', icon:'⭐', title:'Big Mission', sub:'Do it all!', pin:'8064', setup:{balance:75}, receipt:'yes',
-  story:'This is the big one! You will do two things at the ATM.', goal:'First, check your balance. Then get $40. Get a receipt!',
-  plan:[{do:'balance', label:'Check your balance'},{do:'withdraw', amount:40, label:'Get $40'}],
-  after:[{q:'Look at your receipt. How much money is left in your account?', receipt:'last', choices:['$35.00','$75.00','$40.00'], answer:0, hint:'Look for the word BALANCE.', explain:'Yes! $75 take away $40 is $35.'}]}
+MENU_WORDS = {balance:t('Check Balance','Ver saldo'), withdraw:t('Get Cash','Sacar dinero'), deposit:t('Deposit','Depositar'), done:t("I'm Done",'Terminé')};
+MISSIONS = [
+ {id:'M1', icon:'🥪', title:t('Lunch Money','Dinero para el almuerzo'), sub:t('Get $20','Saca $20'), pin:'1357', setup:{balance:85},
+  story:t('You are hungry! Lunch costs $20.', '¡Tienes hambre! El almuerzo cuesta $20.'), goal:t('Get $20 from the ATM.', 'Saca $20 del cajero.'),
+  plan:[{do:'withdraw', amount:20, label:t('Get $20','Sacar $20')}]},
+ {id:'M2', icon:'🎂', title:t('Birthday Money','Dinero de cumpleaños'), sub:t('Deposit $30','Deposita $30'), pin:'2580', setup:{balance:25, bills:[20,10,5]},
+  story:t('Grandma gave you money for your birthday! You have $35.', '¡Tu abuela te dio dinero para tu cumpleaños! Tienes $35.'), goal:t('Put $30 in the bank. Keep $5 for a snack.', 'Mete $30 en el banco. Guarda $5 para una merienda.'),
+  plan:[{do:'deposit', amount:30, label:t('Deposit $30','Depositar $30')}],
+  after:[{q:t('How much money is still in your wallet?', '¿Cuánto dinero te queda en tu cartera?'), pic:'👛', choices:['$5','$35','$30'], answer:0, hint:t('You put $30 in the bank. You kept one bill.', 'Metiste $30 en el banco. Te quedaste con un billete.'), explain:t('Yes! You kept $5 for a snack.', '¡Sí! Guardaste $5 para una merienda.')}]},
+ {id:'M3', icon:'👕', title:t('Shirt Shopping','Comprar una camisa'), sub:t('Check balance','Ver saldo'), pin:'4826', setup:{balance:42},
+  story:t('You want a new shirt. It costs $15.', 'Quieres una camisa nueva. Cuesta $15.'), goal:t('Check your balance. Do you have enough money?', 'Mira tu saldo. ¿Tienes suficiente dinero?'),
+  plan:[{do:'balance', label:t('Check your balance','Ver tu saldo')}],
+  asks:[{on:'opt:balance', where:'bubble', q:t('Your balance is $42. The shirt costs $15. Do you have enough money?', 'Tu saldo es $42. La camisa cuesta $15. ¿Tienes suficiente dinero?'), yesno:true, answer:0, hint:t('Is 42 more than 15?', '¿42 es más que 15?'), explain:t('Yes! $42 is more than $15.', '¡Sí! $42 es más que $15.')}]},
+ {id:'M4', icon:'🎬', title:t('Movie Night','Noche de cine'), sub:t('Get enough cash','Saca suficiente'), pin:'9137', setup:{balance:90},
+  story:t('A movie ticket costs $25. The ATM only gives $20 bills.', 'Un boleto de cine cuesta $25. El cajero solo da billetes de $20.'), goal:t('Get the smallest amount that is enough for $25.', 'Saca la cantidad más pequeña que alcance para $25.'),
+  plan:[{do:'withdraw', amount:40, label:t('Get enough for $25','Sacar suficiente para $25'),
+    hint:t('$20 is not enough for $25. What is the next amount?', '$20 no alcanza para $25. ¿Cuál es la siguiente cantidad?'),
+    check:(n)=> n===40 ? null : (n < 25 ? {msg:t(`$${n} is not enough for a $25 ticket. Pick a bigger amount.`, `$${n} no alcanza para un boleto de $25. Elige una cantidad más grande.`)} : {msg:t(`$${n} is more than you need. Pick the smallest amount that is enough.`, `$${n} es más de lo que necesitas. Elige la cantidad más pequeña que alcance.`)})}]},
+ {id:'M5', icon:'👟', title:t('Not Enough Money','No alcanza el dinero'), sub:t('Uh oh!','¡Ay, no!'), pin:'3690', setup:{balance:35},
+  story:t('You want new shoes. They cost $60.', 'Quieres zapatos nuevos. Cuestan $60.'), goal:t('Try to get $60 from the ATM.', 'Trata de sacar $60 del cajero.'),
+  plan:[{do:'withdraw', amount:20, first:60, label:t('Try to get $60','Tratar de sacar $60'), insteadLabel:t('Get $20 instead','Sacar $20 en su lugar'),
+    nofundsMsg:t('Uh oh! You only have $35. That is not enough for $60. Tap <b>Pick Again</b>. Get $20 and save up for the shoes!', '¡Ay, no! Solo tienes $35. No alcanza para $60. Toca <b>Elegir otra vez</b>. ¡Saca $20 y ahorra para los zapatos!')}],
+  after:[{q:t('Why did the ATM not give you $60?', '¿Por qué el cajero no te dio $60?'), pic:'🤔', choices:t(['There was not enough money in the account','The ATM was broken','I forgot my card'], ['No había suficiente dinero en la cuenta','El cajero estaba roto','Se me olvidó la tarjeta']), answer:0, explain:t('Right! You only had $35. You can save more money and buy the shoes later.', '¡Correcto! Solo tenías $35. Puedes ahorrar más dinero y comprar los zapatos después.')}]},
+ {id:'M6', icon:'💼', title:t('Payday!','¡Día de pago!'), sub:t('Deposit your pay','Deposita tu pago'), pin:'7412', setup:{balance:60, bills:[20,20,10]}, receipt:'yes',
+  story:t('You got paid $50 cash at your job! Great work!', '¡Te pagaron $50 en efectivo en tu trabajo! ¡Buen trabajo!'), goal:t('Put all $50 in the bank. Get a receipt.', 'Mete los $50 en el banco. Pide un recibo.'),
+  plan:[{do:'deposit', amount:50, label:t('Deposit $50','Depositar $50')}],
+  asks:[{on:'deposit-ok', where:'bubble', q:t('Look at the screen. What is your new balance?', 'Mira la pantalla. ¿Cuál es tu nuevo saldo?'), choices:['$110.00','$50.00','$60.00'], answer:0, hint:t('You had $60. You added $50.', 'Tenías $60. Metiste $50.')}]},
+ {id:'M7', icon:'🛒', title:t('Grocery Run','Ir al supermercado'), sub:t('Get $80','Saca $80'), pin:'5203', setup:{balance:150},
+  story:t('You need food from the grocery store.', 'Necesitas comida del supermercado.'), goal:t('Get $80. Hint: there is no $80 button!', 'Saca $80. Pista: ¡no hay un botón de $80!'),
+  plan:[{do:'withdraw', amount:80, label:t('Get $80','Sacar $80')}]},
+ {id:'M8', icon:'⭐', title:t('Big Mission','Gran misión'), sub:t('Do it all!','¡Hazlo todo!'), pin:'8064', setup:{balance:75}, receipt:'yes',
+  story:t('This is the big one! You will do two things at the ATM.', '¡Esta es la grande! Vas a hacer dos cosas en el cajero.'), goal:t('First, check your balance. Then get $40. Get a receipt!', 'Primero, mira tu saldo. Luego saca $40. ¡Pide un recibo!'),
+  plan:[{do:'balance', label:t('Check your balance','Ver tu saldo')},{do:'withdraw', amount:40, label:t('Get $40','Sacar $40')}],
+  after:[{q:t('Look at your receipt. How much money is left in your account?', 'Mira tu recibo. ¿Cuánto dinero queda en tu cuenta?'), receipt:'last', choices:['$35.00','$75.00','$40.00'], answer:0, hint:t('Look for the word BALANCE.', 'Busca la palabra SALDO.'), explain:t('Yes! $75 take away $40 is $35.', '¡Sí! $75 menos $40 es $35.')}]}
 ];
+}
+buildContent();
+
+/* ATM messages and wait texts are stored as keys so they follow the language */
+const MSG = {
+  short:['Type all 4 numbers first.','Primero escribe los 4 números.'],
+  badpin:['That PIN is not right. Try again.','Ese PIN no es correcto. Inténtalo otra vez.'],
+  badamt:['Please pick an amount in $20s, like 20, 40, or 80.','Elige una cantidad en billetes de $20, como 20, 40 u 80.'],
+  cancel:['You pressed CANCEL. Your card is coming back.','Presionaste CANCELAR. Tu tarjeta va a salir.'],
+  nobill:['Tap a bill in your wallet first.','Primero toca un billete de tu cartera.'],
+  wCard:['Reading your card...','Leyendo tu tarjeta...'],
+  wPin:['Checking your PIN...','Revisando tu PIN...'],
+  wCash:['Counting your cash...','Contando tu dinero...'],
+  wDep:['Counting your money...','Contando tu dinero...'],
+};
+const msg = k => k ? MSG[k][db.lang === 'es' ? 1 : 0] : '';
 
 /* ================= ATM model ================= */
 let atm = null;
@@ -684,43 +768,45 @@ function makeAtm(o){
 let busy = false;
 
 function screenHTML(){
-  const A = atm; let t = '', m = '', mid = '', opts = [];
+  const A = atm; let ti = '', m = '', mid = '', opts = [];
   const o = (id,label,cls) => opts.push({id,label,cls:cls||''});
+  const warn = A.msg ? `<span class="warn">${msg(A.msg)}</span>` : '';
+  const yes = t('Yes ✔','Sí ✔'), no = 'No ✖';
   switch(A.state){
-    case 'explore': t = 'Hello! I am an ATM.'; m = 'Shelly will show you my parts.'; break;
-    case 'welcome': t = 'Welcome to Turtle Bank!'; m = 'Please put your card in. 💳 ➜'; break;
-    case 'wait': t = A.waitText; mid = '<div class="spinner"></div>'; break;
-    case 'pin': t = 'Enter your PIN';
+    case 'explore': ti = t('Hello! I am an ATM.','¡Hola! Soy un cajero.'); m = t('Shelly will show you my parts.','Shelly te va a mostrar mis partes.'); break;
+    case 'welcome': ti = t('Welcome to Turtle Bank!','¡Bienvenidos al Banco Tortuga!'); m = t('Please put your card in. 💳 ➜','Por favor, mete tu tarjeta. 💳 ➜'); break;
+    case 'wait': ti = msg(A.waitText); mid = '<div class="spinner"></div>'; break;
+    case 'pin': ti = t('Enter your PIN','Escribe tu PIN');
       mid = '<div class="pinboxes">' + [0,1,2,3].map(i => `<span class="${i<A.pinBuf.length?'f':''}">${i<A.pinBuf.length?'●':''}</span>`).join('') + '</div>';
-      m = A.msg ? `<span class="warn">${A.msg}</span>` : 'Type 4 numbers. Then press ENTER.';
+      m = warn || t('Type 4 numbers. Then press ENTER.','Escribe 4 números. Luego presiona ENTRAR.');
       break;
-    case 'menu': t = 'What do you want to do?';
-      o('balance','💰 Check Balance'); o('withdraw','💵 Get Cash'); o('deposit','🏦 Deposit'); o('done',"👋 I'm Done",'stop'); break;
-    case 'balance': t = 'Your balance is:'; mid = `<div class="bigamt">${money(A.balance)}</div>`; m = 'This is how much money is in your account.'; o('ok','OK ✔','go wide'); break;
-    case 'withdraw': t = 'How much cash?'; m = 'This ATM gives $20 bills.';
-      FAST.forEach(n => o('a'+n, '$'+n)); o('other','⌨️ Other Amount'); o('back','◀ Back','stop'); break;
-    case 'other': t = 'Type how much cash.';
+    case 'menu': ti = t('What do you want to do?','¿Qué quieres hacer?');
+      o('balance','💰 ' + MENU_WORDS.balance); o('withdraw','💵 ' + MENU_WORDS.withdraw); o('deposit','🏦 ' + MENU_WORDS.deposit); o('done','👋 ' + MENU_WORDS.done,'stop'); break;
+    case 'balance': ti = t('Your balance is:','Tu saldo es:'); mid = `<div class="bigamt">${money(A.balance)}</div>`; m = t('This is how much money is in your account.','Este es el dinero que hay en tu cuenta.'); o('ok','OK ✔','go wide'); break;
+    case 'withdraw': ti = t('How much cash?','¿Cuánto dinero?'); m = t('This ATM gives $20 bills.','Este cajero da billetes de $20.');
+      FAST.forEach(n => o('a'+n, '$'+n)); o('other',t('⌨️ Other Amount','⌨️ Otra cantidad')); o('back',t('◀ Back','◀ Atrás'),'stop'); break;
+    case 'other': ti = t('Type how much cash.','Escribe cuánto dinero.');
       mid = `<div class="amtbox">$${A.amtBuf||'0'}</div>`;
-      m = A.msg ? `<span class="warn">${A.msg}</span>` : 'Use the keypad. Then press ENTER.';
-      o('back','◀ Back','stop wide'); break;
-    case 'nofunds': t = 'Sorry! Not enough money.';
-      m = `You asked for <b>${dollars(A.tried)}</b>. Your balance is only <b>${money(A.balance)}</b>.`;
-      o('again','Pick Again','go wide'); break;
-    case 'deposit': t = 'Put in your cash.'; m = A.msg ? `<span class="warn">${A.msg}</span>` : 'Tap the bills in your wallet.';
-      mid = `<div class="sm">You put in:</div><div class="bigamt">${money(sumOf(A.depIn))}</div>`;
-      o('ddone','✔ Done','go'); o('dreset','↺ Start Over','stop'); break;
-    case 'depconfirm': t = 'Is this right?'; mid = `<div class="sm">You put in:</div><div class="bigamt">${money(sumOf(A.depIn))}</div>`;
-      o('yes','Yes ✔','go'); o('no','No ✖','stop'); break;
-    case 'depok': t = 'Deposit done! 🎉'; mid = `<div class="sm">Your new balance is:</div><div class="bigamt">${money(A.balance)}</div>`; o('ok','OK ✔','go wide'); break;
-    case 'receiptq': t = 'Do you want a receipt?'; m = 'A receipt is a paper that shows what you did. 🧾'; o('yes','Yes ✔','go'); o('no','No ✖','stop'); break;
-    case 'more': t = 'Do you want to do something else?'; o('yes','Yes ✔','go'); o('no','No ✖','stop'); break;
-    case 'eject': t = 'Please take your card. 💳'; m = A.msg || 'Do not forget it!'; break;
-    case 'cash': t = 'Please take your cash. 💵'; m = 'Put it in your wallet.'; break;
-    case 'receipt': t = 'Please take your receipt. 🧾'; break;
-    case 'bye': t = 'Thank you! Have a great day! 🐢'; break;
+      m = warn || t('Use the keypad. Then press ENTER.','Usa el teclado. Luego presiona ENTRAR.');
+      o('back',t('◀ Back','◀ Atrás'),'stop wide'); break;
+    case 'nofunds': ti = t('Sorry! Not enough money.','¡Lo siento! No alcanza el dinero.');
+      m = t(`You asked for <b>${dollars(A.tried)}</b>. Your balance is only <b>${money(A.balance)}</b>.`, `Pediste <b>${dollars(A.tried)}</b>. Tu saldo es solo <b>${money(A.balance)}</b>.`);
+      o('again',t('Pick Again','Elegir otra vez'),'go wide'); break;
+    case 'deposit': ti = t('Put in your cash.','Mete tu dinero.'); m = warn || t('Tap the bills in your wallet.','Toca los billetes de tu cartera.');
+      mid = `<div class="sm">${t('You put in:','Metiste:')}</div><div class="bigamt">${money(sumOf(A.depIn))}</div>`;
+      o('ddone',t('✔ Done','✔ Listo'),'go'); o('dreset',t('↺ Start Over','↺ Empezar de nuevo'),'stop'); break;
+    case 'depconfirm': ti = t('Is this right?','¿Está bien?'); mid = `<div class="sm">${t('You put in:','Metiste:')}</div><div class="bigamt">${money(sumOf(A.depIn))}</div>`;
+      o('yes',yes,'go'); o('no',no,'stop'); break;
+    case 'depok': ti = t('Deposit done! 🎉','¡Depósito listo! 🎉'); mid = `<div class="sm">${t('Your new balance is:','Tu nuevo saldo es:')}</div><div class="bigamt">${money(A.balance)}</div>`; o('ok','OK ✔','go wide'); break;
+    case 'receiptq': ti = t('Do you want a receipt?','¿Quieres un recibo?'); m = t('A receipt is a paper that shows what you did. 🧾','Un recibo es un papel que muestra lo que hiciste. 🧾'); o('yes',yes,'go'); o('no',no,'stop'); break;
+    case 'more': ti = t('Do you want to do something else?','¿Quieres hacer algo más?'); o('yes',yes,'go'); o('no',no,'stop'); break;
+    case 'eject': ti = t('Please take your card. 💳','Por favor, saca tu tarjeta. 💳'); m = msg(A.msg) || t('Do not forget it!','¡No la olvides!'); break;
+    case 'cash': ti = t('Please take your cash. 💵','Por favor, saca tu dinero. 💵'); m = t('Put it in your wallet.','Guárdalo en tu cartera.'); break;
+    case 'receipt': ti = t('Please take your receipt. 🧾','Por favor, saca tu recibo. 🧾'); break;
+    case 'bye': ti = t('Thank you! Have a great day! 🐢','¡Gracias! ¡Que tengas un buen día! 🐢'); break;
   }
-  const say = `<button class="say-screen" data-say-screen aria-label="Read the screen">🔊</button>`;
-  return `${say}<div class="st">${t}</div>${m?`<div class="sm">${m}</div>`:''}${mid}` +
+  const sayBtn = `<button class="say-screen" data-say-screen aria-label="${t('Read the screen','Leer la pantalla')}">🔊</button>`;
+  return `${sayBtn}<div class="st">${ti}</div>${m?`<div class="sm">${m}</div>`:''}${mid}` +
     (opts.length ? `<div class="opts">${opts.map(x=>`<button class="opt ${x.cls}" data-opt="${x.id}">${x.label}</button>`).join('')}</div>` : '');
 }
 
@@ -743,18 +829,18 @@ function renderAtm(){
 
 function renderWallet(){
   const W = atm.wallet; let h = '';
-  if (W.card) h += `<button class="w-card" id="wCard" aria-label="My debit card"><span class="bank">TURTLE BANK</span><span class="tt">🐢</span><div class="chip"></div><div class="no">**** 1234</div><div>${esc((student||'MY CARD').toUpperCase())}</div></button>`;
+  if (W.card) h += `<button class="w-card" id="wCard" aria-label="${t('My debit card','Mi tarjeta de débito')}"><span class="bank">${t('TURTLE BANK','BANCO TORTUGA')}</span><span class="tt">🐢</span><div class="chip"></div><div class="no">**** 1234</div><div>${esc((student||t('MY CARD','MI TARJETA')).toUpperCase())}</div></button>`;
   const groups = {}; W.bills.forEach(v => groups[v] = (groups[v]||0) + 1);
   const vals = Object.keys(groups).map(Number).sort((a,b)=>b-a);
-  if (vals.length) h += '<div class="bills" id="wBills">' + vals.map(v => `<button class="bill" data-bill="${v}" aria-label="${v} dollar bill">$${v}${groups[v]>1?`<span class="x">×${groups[v]}</span>`:''}</button>`).join('') + '</div>';
-  W.receipts.forEach((r,i) => h += `<button class="r-btn" data-rcpt="${i}"><span class="ri">🧾</span>Read me</button>`);
+  if (vals.length) h += '<div class="bills" id="wBills">' + vals.map(v => `<button class="bill" data-bill="${v}" aria-label="${t(v+' dollar bill','billete de '+v+' dólares')}">$${v}${groups[v]>1?`<span class="x">×${groups[v]}</span>`:''}</button>`).join('') + '</div>';
+  W.receipts.forEach((r,i) => h += `<button class="r-btn" data-rcpt="${i}"><span class="ri">🧾</span>${t('Read me','Léeme')}</button>`);
   if (mode !== 'idle' && !LESSON_NOATM()) {
     const showPin = atm.peek || peeking;
-    h += `<button class="pin-note" id="wPin">${showPin ? `My PIN<span class="pn">${atm.pin}</span>` : '🙈 Tap to peek at my PIN'}</button>`;
+    h += `<button class="pin-note" id="wPin">${showPin ? `${t('My PIN','Mi PIN')}<span class="pn">${atm.pin}</span>` : t('🙈 Tap to peek at my PIN','🙈 Toca para ver mi PIN')}</button>`;
   }
-  if (!h) h = '<div class="empty-note">Your wallet is empty.</div>';
+  if (!h) h = `<div class="empty-note">${t('Your wallet is empty.','Tu cartera está vacía.')}</div>`;
   $('#walletItems').innerHTML = h;
-  $('#wCashTotal').textContent = 'Cash: $' + sumOf(W.bills);
+  $('#wCashTotal').textContent = t('Cash: $','Efectivo: $') + sumOf(W.bills);
 }
 let peeking = false, peekTimer = 0;
 function LESSON_NOATM(){ return mode === 'lesson' && L && L.def.noAtm; }
@@ -783,7 +869,7 @@ function apply(a, p){
   A.msg = '';
   switch(a){
     case 'card': A.wallet.card = false; A.cardIn = true; A.pinBuf = ''; A.covered = false; sfx.whirr();
-      ev.push('card-in'); waitThen('Reading your card...', 900, 'pin'); break;
+      ev.push('card-in'); waitThen('wCard', 900, 'pin'); break;
     case 'cover': A.covered = !A.covered; ev.push(A.covered ? 'covered' : 'uncovered'); break;
     case 'key': sfx.key();
       if (A.state === 'pin' && A.pinBuf.length < 4) A.pinBuf += p;
@@ -792,17 +878,17 @@ function apply(a, p){
     case 'clear': sfx.key(); if (A.state === 'pin') A.pinBuf = ''; else A.amtBuf = ''; break;
     case 'enter': sfx.key();
       if (A.state === 'pin'){
-        if (A.pinBuf.length < 4){ A.msg = 'Type all 4 numbers first.'; ev.push('pin-short'); }
-        else if (A.pinBuf === A.pin){ A.pinBuf = ''; A.covered = false; ev.push('pin-ok'); waitThen('Checking your PIN...', 800, 'menu'); }
-        else { A.pinBuf = ''; A.msg = 'That PIN is not right. Try again.'; ev.push('pin-bad'); sfx.nope(); }
+        if (A.pinBuf.length < 4){ A.msg = 'short'; ev.push('pin-short'); }
+        else if (A.pinBuf === A.pin){ A.pinBuf = ''; A.covered = false; ev.push('pin-ok'); waitThen('wPin', 800, 'menu'); }
+        else { A.pinBuf = ''; A.msg = 'badpin'; ev.push('pin-bad'); sfx.nope(); }
       } else {
         const n = parseInt(A.amtBuf || '0', 10);
-        if (!n || n % 20 !== 0 || n > 500){ A.amtBuf = ''; A.msg = 'Please pick an amount in $20s, like 20, 40, or 80.'; ev.push('amt-bad'); sfx.nope(); }
+        if (!n || n % 20 !== 0 || n > 500){ A.amtBuf = ''; A.msg = 'badamt'; ev.push('amt-bad'); sfx.nope(); }
         else withdraw(n, ev);
       }
       break;
     case 'cancel': sfx.nope(); A.wallet.bills.push(...A.depIn); A.depIn = []; A.covered = false; A.wantReceipt = false;
-      A.state = 'eject'; A.msg = 'You pressed CANCEL. Your card is coming back.'; ev.push('cancel'); break;
+      A.state = 'eject'; A.msg = 'cancel'; ev.push('cancel'); break;
     case 'opt': optAction(p, ev); break;
     case 'bill': { const i = A.wallet.bills.indexOf(p); A.wallet.bills.splice(i,1); A.depIn.push(p); sfx.key(); ev.push('bill-'+p); break; }
     case 'take': sfx.good();
@@ -817,13 +903,13 @@ function withdraw(n, ev){
   const A = atm;
   if (n > A.balance){ A.tried = n; A.state = 'nofunds'; ev.push('nofunds:' + n); sfx.nope(); return; }
   A.balance -= n; for (let i = 0; i < n/20; i++) A.pending.push(20);
-  A.log.push({t:'CASH WITHDRAWAL', a:n}); ev.push('withdraw:' + n); sfx.whirr();
-  waitThen('Counting your cash...', 1000, 'receiptq');
+  A.log.push({k:'wd', a:n}); ev.push('withdraw:' + n); sfx.whirr();
+  waitThen('wCash', 1000, 'receiptq');
 }
 function optAction(id, ev){
   const A = atm, s = A.state; sfx.key();
   if (s === 'menu'){
-    if (id === 'balance'){ A.log.push({t:'BALANCE CHECK'}); A.state = 'balance'; }
+    if (id === 'balance'){ A.log.push({k:'bal'}); A.state = 'balance'; }
     if (id === 'withdraw') A.state = 'withdraw';
     if (id === 'deposit'){ A.depIn = []; A.state = 'deposit'; }
     if (id === 'done') finishSession();
@@ -837,10 +923,10 @@ function optAction(id, ev){
   else if (s === 'nofunds' && id === 'again') A.state = 'withdraw';
   else if (s === 'deposit'){
     if (id === 'dreset'){ A.wallet.bills.push(...A.depIn); A.depIn = []; }
-    if (id === 'ddone'){ if (!A.depIn.length) A.msg = 'Tap a bill in your wallet first.'; else A.state = 'depconfirm'; }
+    if (id === 'ddone'){ if (!A.depIn.length) A.msg = 'nobill'; else A.state = 'depconfirm'; }
   }
   else if (s === 'depconfirm'){
-    if (id === 'yes'){ const t = sumOf(A.depIn); A.balance += t; A.log.push({t:'DEPOSIT', a:t}); A.depIn = []; ev.push('deposit-ok'); waitThen('Counting your money...', 900, 'depok'); }
+    if (id === 'yes'){ const tot = sumOf(A.depIn); A.balance += tot; A.log.push({k:'dep', a:tot}); A.depIn = []; ev.push('deposit-ok'); waitThen('wDep', 900, 'depok'); }
     else { A.wallet.bills.push(...A.depIn); A.depIn = []; A.state = 'deposit'; }
   }
   else if (s === 'depok' && id === 'ok') A.state = 'receiptq';
@@ -860,23 +946,24 @@ function nextOut(ev){
   busy = true;
   setTimeout(() => { busy = false; if (atm === A && A.state === 'bye'){ A.state = 'welcome'; A.wantReceipt = false; renderAtm(); } }, 1600);
 }
-function waitThen(text, ms, next){
-  const A = atm; A.state = 'wait'; A.waitText = text; busy = true;
+function waitThen(textKey, ms, next){
+  const A = atm; A.state = 'wait'; A.waitText = textKey; busy = true;
   setTimeout(() => { busy = false; if (atm !== A) return; A.state = next; renderAtm(); }, ms);
 }
 
 /* ================= receipts ================= */
+const RLINE = {wd:['CASH WITHDRAWAL','RETIRO DE EFECTIVO'], bal:['BALANCE CHECK','CONSULTA DE SALDO'], dep:['DEPOSIT','DEPÓSITO']};
 function receiptHTML(r){
-  const d = r.date;
-  const date = d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  const time = d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-  return `<div class="paper"><div class="c">🐢 TURTLE BANK</div><div class="c">ATM RECEIPT</div><hr>
-    <div class="row"><span>DATE</span><span>${date}</span></div><div class="row"><span>TIME</span><span>${time}</span></div>
-    <div class="row"><span>CARD</span><span>**** 1234</span></div><hr>
-    ${r.lines.map(l => `<div class="row"><span>${l.t}</span><span>${l.a!=null?money(l.a):''}</span></div>`).join('')}
-    <hr><div class="row bal"><span>BALANCE</span><span>${money(r.balance)}</span></div><hr><div class="c">THANK YOU!</div></div>`;
+  const d = r.date, loc = db.lang === 'es' ? 'es-US' : 'en-US', i = db.lang === 'es' ? 1 : 0;
+  const date = d.toLocaleDateString(loc,{month:'short',day:'numeric',year:'numeric'});
+  const time = d.toLocaleTimeString(loc,{hour:'numeric',minute:'2-digit'});
+  return `<div class="paper"><div class="c">🐢 ${t('TURTLE BANK','BANCO TORTUGA')}</div><div class="c">${t('ATM RECEIPT','RECIBO DEL CAJERO')}</div><hr>
+    <div class="row"><span>${t('DATE','FECHA')}</span><span>${date}</span></div><div class="row"><span>${t('TIME','HORA')}</span><span>${time}</span></div>
+    <div class="row"><span>${t('CARD','TARJETA')}</span><span>**** 1234</span></div><hr>
+    ${r.lines.map(l => `<div class="row"><span>${RLINE[l.k][i]}</span><span>${l.a!=null?money(l.a):''}</span></div>`).join('')}
+    <hr><div class="row bal"><span>${t('BALANCE','SALDO')}</span><span>${money(r.balance)}</span></div><hr><div class="c">${t('THANK YOU!','¡GRACIAS!')}</div></div>`;
 }
-const SAMPLE_RECEIPT = {date:new Date(), lines:[{t:'CASH WITHDRAWAL', a:40}], balance:160};
+const SAMPLE_RECEIPT = {date:new Date(), lines:[{k:'wd', a:40}], balance:160};
 
 /* ================= highlight + coach ================= */
 let hlSel = [];
@@ -893,13 +980,13 @@ function say(html, m, isHint){
   mood(m || null);
   if (db.read) speak(html);
 }
-function toast(t){ const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 1200); }
-const PRAISE = ['Nice!','You got it!','Great job!','Awesome!','Yes!','Super!','Way to go!'];
-const praise = () => PRAISE[Math.floor(Math.random()*PRAISE.length)];
+function toast(s){ const d = document.createElement('div'); d.className = 'toast'; d.textContent = s; document.body.appendChild(d); setTimeout(() => d.remove(), 1200); }
+const praise = () => { const P = t(['Nice!','You got it!','Great job!','Awesome!','Yes!','Super!','Way to go!'], ['¡Bien!','¡Lo lograste!','¡Muy bien!','¡Genial!','¡Sí!','¡Súper!','¡Así se hace!']); return P[Math.floor(Math.random()*P.length)]; };
+const goalLine = () => `<b>${t('Mission:','Misión:')}</b> ${M.def.goal}`;
 
 /* ================= action pipeline ================= */
-let mode = 'idle';   // idle | lesson | mission | free
-let pendingAsk = false;
+let mode = 'idle';   // idle | lesson | mission | free | done
+let pendingAsk = false, curAsk = null;
 let mistakesThisStep = 0, idleTimer = 0;
 
 function act(a, p){
@@ -908,7 +995,7 @@ function act(a, p){
   const key = p === undefined ? a : a + ':' + p;
   if (mode === 'lesson' && L.stepLock === L.i) return;
   if (mode === 'mission' && M.finished) return;
-  if (pendingAsk){ nudge({msg:'Answer my question first! 🐢', hl:'#bChoices'}); return; }
+  if (pendingAsk){ nudge({msg:t('Answer my question first! 🐢','¡Primero contesta mi pregunta! 🐢'), hl:'#bChoices'}); return; }
   if (!valid(a, p)){
     if (busy) return;
     if (a === 'part' || atm.explore){ /* explore handled by guard */ }
@@ -939,11 +1026,11 @@ function countMistake(){
 
 function guard(key, a, p){
   if (mode === 'free'){
-    if (a === 'key' && atm.state === 'pin' && !atm.covered && !freeReminded){ freeReminded = true; setTimeout(() => say('💡 Good job! Next time, cover the keypad first. 🖐️', 'think', true), 50); }
+    if (a === 'key' && atm.state === 'pin' && !atm.covered && !freeReminded){ freeReminded = true; setTimeout(() => say(t('💡 Good job! Next time, cover the keypad first. 🖐️','💡 ¡Bien! La próxima vez, tapa el teclado primero. 🖐️'), 'think', true), 50); }
     return null;
   }
   if (a === 'key' && atm.state === 'pin' && !atm.covered)
-    return {msg:'Safety first! Tap <b>Cover the keypad</b> before you type your PIN.', hl:'#coverBtn', force:true};
+    return {msg:t('Safety first! Tap <b>Cover the keypad</b> before you type your PIN.','¡Primero la seguridad! Toca <b>Tapa el teclado</b> antes de escribir tu PIN.'), hl:'#coverBtn', force:true};
   if (mode === 'lesson') return lessonGuard(key, a, p);
   if (mode === 'mission') return missionGuard(key, a, p);
   return null;
@@ -958,8 +1045,8 @@ function onEvent(ev){
 
 function currentHint(){
   if (mode === 'lesson'){ const s = L.def.steps[L.i]; if (!s) return null;
-    if (s.type === 'tell') return {msg:'Tap the green <b>Next</b> button to keep going.', hl:'#nextBtn', force:true};
-    return {msg: s.hint || 'Look for the glowing part!', hl: s.hl || s.hintHl, force: !!s.hl}; }
+    if (s.type === 'tell') return {msg:t('Tap the green <b>Next</b> button to keep going.','Toca el botón verde <b>Siguiente</b> para seguir.'), hl:'#nextBtn', force:true};
+    return {msg: s.hint || t('Look for the glowing part!','¡Busca la parte que brilla!'), hl: s.hl || s.hintHl, force: !!s.hl}; }
   if (mode === 'mission') return missionHint();
   return stateHint({});
 }
@@ -968,34 +1055,34 @@ function currentHint(){
 function stateHint(ctx){
   const A = atm;
   switch(A.state){
-    case 'welcome': return {msg:'Tap your <b>debit card</b> in your wallet to put it in the ATM.', hl:'#wCard'};
-    case 'wait': return {msg:'Wait a second. The ATM is working…'};
+    case 'welcome': return {msg:t('Tap your <b>debit card</b> in your wallet to put it in the ATM.','Toca tu <b>tarjeta de débito</b> en tu cartera para meterla en el cajero.'), hl:'#wCard'};
+    case 'wait': return {msg:t('Wait a second. The ATM is working…','Espera un segundo. El cajero está trabajando…')};
     case 'pin':
-      if (!A.covered) return {msg:'First, tap <b>Cover the keypad</b> 🖐️.', hl:'#coverBtn'};
-      if (A.pinBuf.length < 4) return {msg:`Type your PIN on the keypad. Need help remembering? Peek at the yellow note.`, hl:['#keypad','#wPin']};
-      return {msg:'Now press the green <b>ENTER</b> button.', hl:'#kEnter'};
-    case 'menu': return ctx.menu ? {msg: ctx.menu === 'done' ? "You did it all! Tap <b>I'm Done</b>." : `Tap <b>${MENU_WORDS[ctx.menu]}</b>.`, hl:`[data-opt="${ctx.menu}"]`} : {msg:'Pick what you want to do on the screen.'};
-    case 'balance': return {msg:'Read your balance. Then tap <b>OK</b>.', hl:'[data-opt="ok"]'};
+      if (!A.covered) return {msg:t('First, tap <b>Cover the keypad</b> 🖐️.','Primero, toca <b>Tapa el teclado</b> 🖐️.'), hl:'#coverBtn'};
+      if (A.pinBuf.length < 4) return {msg:t('Type your PIN on the keypad. Need help remembering? Peek at the yellow note.','Escribe tu PIN en el teclado. ¿No te acuerdas? Mira la nota amarilla.'), hl:['#keypad','#wPin']};
+      return {msg:t('Now press the green <b>ENTER</b> button.','Ahora presiona el botón verde <b>ENTRAR</b>.'), hl:'#kEnter'};
+    case 'menu': return ctx.menu ? {msg: ctx.menu === 'done' ? t("You did it all! Tap <b>I'm Done</b>.",'¡Ya hiciste todo! Toca <b>Terminé</b>.') : t(`Tap <b>${MENU_WORDS[ctx.menu]}</b>.`,`Toca <b>${MENU_WORDS[ctx.menu]}</b>.`), hl:`[data-opt="${ctx.menu}"]`} : {msg:t('Pick what you want to do on the screen.','Elige lo que quieres hacer en la pantalla.')};
+    case 'balance': return {msg:t('Read your balance. Then tap <b>OK</b>.','Lee tu saldo. Luego toca <b>OK</b>.'), hl:'[data-opt="ok"]'};
     case 'withdraw':
       if (ctx.amount){ if (ctx.custom) return {msg: ctx.custom};
-        return FAST.includes(ctx.amount) ? {msg:`Tap <b>$${ctx.amount}</b>.`, hl:`[data-opt="a${ctx.amount}"]`} : {msg:`There is no $${ctx.amount} button. Tap <b>Other Amount</b>.`, hl:'[data-opt="other"]'}; }
-      return {msg:'Tap how much cash you want.'};
-    case 'other': return ctx.amount ? {msg:`Type <b>${spaced(String(ctx.amount))}</b> on the keypad. Then press green <b>ENTER</b>.`, hl:'#keypad'} : {msg:'Type an amount like 40 or 80. Then press ENTER.', hl:'#keypad'};
-    case 'nofunds': return {msg:'There is not enough money. Tap <b>Pick Again</b> and choose a smaller amount.', hl:'[data-opt="again"]'};
+        return FAST.includes(ctx.amount) ? {msg:t(`Tap <b>$${ctx.amount}</b>.`,`Toca <b>$${ctx.amount}</b>.`), hl:`[data-opt="a${ctx.amount}"]`} : {msg:t(`There is no $${ctx.amount} button. Tap <b>Other Amount</b>.`,`No hay un botón de $${ctx.amount}. Toca <b>Otra cantidad</b>.`), hl:'[data-opt="other"]'}; }
+      return {msg:t('Tap how much cash you want.','Toca cuánto dinero quieres.')};
+    case 'other': return ctx.amount ? {msg:t(`Type <b>${spaced(String(ctx.amount))}</b> on the keypad. Then press green <b>ENTER</b>.`,`Escribe <b>${spaced(String(ctx.amount))}</b> en el teclado. Luego presiona el verde <b>ENTRAR</b>.`), hl:'#keypad'} : {msg:t('Type an amount like 40 or 80. Then press ENTER.','Escribe una cantidad como 40 u 80. Luego presiona ENTRAR.'), hl:'#keypad'};
+    case 'nofunds': return {msg:t('There is not enough money. Tap <b>Pick Again</b> and choose a smaller amount.','No alcanza el dinero. Toca <b>Elegir otra vez</b> y escoge una cantidad más pequeña.'), hl:'[data-opt="again"]'};
     case 'deposit': {
       const s = sumOf(A.depIn);
-      if (ctx.deposit){ if (s > ctx.deposit) return {msg:`That is too much. Tap <b>Start Over</b>.`, hl:'[data-opt="dreset"]'};
-        if (s === ctx.deposit) return {msg:'That is the right amount! Tap <b>Done</b>.', hl:'[data-opt="ddone"]'};
-        return {msg:`Tap bills in your wallet to make <b>$${ctx.deposit}</b>. You have put in $${s}.`, hl:'#wBills'}; }
-      return {msg:'Tap the bills in your wallet. Then tap <b>Done</b>.', hl:'#wBills'}; }
-    case 'depconfirm': return {msg:'Is that the right amount? If yes, tap <b>Yes</b>.', hl:'[data-opt="yes"]'};
-    case 'depok': return {msg:'Tap <b>OK</b>.', hl:'[data-opt="ok"]'};
-    case 'receiptq': return ctx.receipt ? {msg: ctx.receipt === 'yes' ? 'This time you need a receipt. Tap <b>Yes</b>.' : 'Tap <b>No</b>.', hl:`[data-opt="${ctx.receipt}"]`} : {msg:'Do you want a receipt? Tap <b>Yes</b> or <b>No</b>. You can pick!', hl:['[data-opt="yes"]','[data-opt="no"]']};
-    case 'more': return ctx.more ? {msg: ctx.more === 'yes' ? 'You still have more to do! Tap <b>Yes</b>.' : 'You are all done. Tap <b>No</b>.', hl:`[data-opt="${ctx.more}"]`} : {msg:'Want to do something else? Tap Yes or No.'};
-    case 'eject': return {msg:'Take your <b>card</b>! Tap it in the card slot.', hl:'#slotCard'};
-    case 'cash': return {msg:'Take your <b>cash</b>! Tap the money.', hl:'#slotCash'};
-    case 'receipt': return {msg:'Take your <b>receipt</b>! Tap the paper.', hl:'#slotReceipt'};
-    case 'bye': return {msg:'All done! 🐢'};
+      if (ctx.deposit){ if (s > ctx.deposit) return {msg:t('That is too much. Tap <b>Start Over</b>.','Es demasiado. Toca <b>Empezar de nuevo</b>.'), hl:'[data-opt="dreset"]'};
+        if (s === ctx.deposit) return {msg:t('That is the right amount! Tap <b>Done</b>.','¡Es la cantidad correcta! Toca <b>Listo</b>.'), hl:'[data-opt="ddone"]'};
+        return {msg:t(`Tap bills in your wallet to make <b>$${ctx.deposit}</b>. You have put in $${s}.`,`Toca billetes de tu cartera para juntar <b>$${ctx.deposit}</b>. Has metido $${s}.`), hl:'#wBills'}; }
+      return {msg:t('Tap the bills in your wallet. Then tap <b>Done</b>.','Toca los billetes de tu cartera. Luego toca <b>Listo</b>.'), hl:'#wBills'}; }
+    case 'depconfirm': return {msg:t('Is that the right amount? If yes, tap <b>Yes</b>.','¿Es la cantidad correcta? Si es así, toca <b>Sí</b>.'), hl:'[data-opt="yes"]'};
+    case 'depok': return {msg:t('Tap <b>OK</b>.','Toca <b>OK</b>.'), hl:'[data-opt="ok"]'};
+    case 'receiptq': return ctx.receipt ? {msg: ctx.receipt === 'yes' ? t('This time you need a receipt. Tap <b>Yes</b>.','Esta vez necesitas un recibo. Toca <b>Sí</b>.') : t('Tap <b>No</b>.','Toca <b>No</b>.'), hl:`[data-opt="${ctx.receipt}"]`} : {msg:t('Do you want a receipt? Tap <b>Yes</b> or <b>No</b>. You can pick!','¿Quieres un recibo? Toca <b>Sí</b> o <b>No</b>. ¡Tú eliges!'), hl:['[data-opt="yes"]','[data-opt="no"]']};
+    case 'more': return ctx.more ? {msg: ctx.more === 'yes' ? t('You still have more to do! Tap <b>Yes</b>.','¡Todavía te falta algo! Toca <b>Sí</b>.') : t('You are all done. Tap <b>No</b>.','Ya terminaste. Toca <b>No</b>.'), hl:`[data-opt="${ctx.more}"]`} : {msg:t('Want to do something else? Tap Yes or No.','¿Quieres hacer algo más? Toca Sí o No.')};
+    case 'eject': return {msg:t('Take your <b>card</b>! Tap it in the card slot.','¡Saca tu <b>tarjeta</b>! Tócala en la ranura de tarjeta.'), hl:'#slotCard'};
+    case 'cash': return {msg:t('Take your <b>cash</b>! Tap the money.','¡Saca tu <b>dinero</b>! Toca los billetes.'), hl:'#slotCash'};
+    case 'receipt': return {msg:t('Take your <b>receipt</b>! Tap the paper.','¡Saca tu <b>recibo</b>! Toca el papel.'), hl:'#slotReceipt'};
+    case 'bye': return {msg:t('All done! 🐢','¡Terminaste! 🐢')};
   }
   return null;
 }
@@ -1003,7 +1090,7 @@ function stateHint(ctx){
 /* ================= lesson runner ================= */
 let L = null;
 function startLesson(def){
-  mode = 'lesson'; L = {def, i:-1, mistakes:0};
+  mode = 'lesson'; L = {def, idx:LESSONS.indexOf(def), i:-1, mistakes:0};
   atm = makeAtm(Object.assign({showPin:true}, def.setup || {}));
   if (def.explore){ atm.explore = true; atm.state = 'explore'; }
   openPlay(def.icon + ' ' + def.title, def.steps.length);
@@ -1016,29 +1103,31 @@ function startLesson(def){
 }
 function lessonNext(){
   L.i++; mistakesThisStep = 0; setHl(null);
-  const s = L.def.steps[L.i];
   renderDots(L.i, L.def.steps.length);
-  if (!s){ finishActivity(); return; }
-  if (s.clearTags) $$('.part-tag').forEach(t => t.classList.remove('show'));
+  if (!L.def.steps[L.i]){ finishActivity(); return; }
+  showLessonStep();
+}
+function showLessonStep(){
+  const s = L.def.steps[L.i];
+  if (s.clearTags) $$('.part-tag').forEach(x => x.classList.remove('show'));
   $('#nextBtn').hidden = s.type !== 'tell';
-  if (s.type === 'tell'){ say(s.text, null); setHl(s.hl || null); }
-  else if (s.type === 'do' || s.type === 'part'){ say(s.text, null); setHl(s.hl || null); }
-  else if (s.type === 'ask'){ ask(s, () => lessonNext()); }
+  if (s.type === 'tell' || s.type === 'do' || s.type === 'part'){ say(s.text, null); setHl(s.hl || null); }
+  else if (s.type === 'ask'){ ask(s, () => lessonNext(), {src:'lesson'}); }
 }
 function lessonGuard(key, a, p){
   const s = L.def.steps[L.i]; if (!s) return null;
-  if (s.type === 'tell') return {msg:'Tap the green <b>Next</b> button first.', hl:'#nextBtn', force:true};
-  if (s.type === 'ask') return {msg:'Answer my question first! 🐢'};
+  if (s.type === 'tell') return {msg:t('Tap the green <b>Next</b> button first.','Primero toca el botón verde <b>Siguiente</b>.'), hl:'#nextBtn', force:true};
+  if (s.type === 'ask') return {msg:t('Answer my question first! 🐢','¡Primero contesta mi pregunta! 🐢')};
   if (s.block){ const b = s.block(key); if (b) return Object.assign({force:true}, b); }
   if (match(s.done, key) || (s.allow && match(s.allow, key))) return null;
-  if (key === 'cancel') return {msg:'Oops! <b>CANCEL</b> stops everything. ' + (s.hint || ''), hl:s.hl || s.hintHl, force:true};
-  return {msg: s.hint || 'Not that one. Look for the glowing part!', hl:s.hl || s.hintHl, force:true};
+  if (key === 'cancel') return {msg:t('Oops! <b>CANCEL</b> stops everything. ','¡Uy! <b>CANCELAR</b> detiene todo. ') + (s.hint || ''), hl:s.hl || s.hintHl, force:true};
+  return {msg: s.hint || t('Not that one. Look for the glowing part!','Ese no. ¡Busca la parte que brilla!'), hl:s.hl || s.hintHl, force:true};
 }
 function lessonEvent(ev){
   const s = L.def.steps[L.i]; if (!s) return;
-  if (ev === 'pin-bad'){ say(`💡 That PIN was not right. Your PIN is <b>${spaced(atm.pin)}</b>. Try again!`, 'think', true); return; }
-  if (ev === 'pin-short'){ say('💡 Type all 4 numbers first. Then press ENTER.', 'think', true); return; }
-  if (ev === 'amt-bad'){ say('💡 This ATM gives $20 bills. Press CLEAR and type 8 then 0.', 'think', true); return; }
+  if (ev === 'pin-bad'){ say(t(`💡 That PIN was not right. Your PIN is <b>${spaced(atm.pin)}</b>. Try again!`,`💡 Ese PIN no es correcto. Tu PIN es <b>${spaced(atm.pin)}</b>. ¡Inténtalo otra vez!`), 'think', true); return; }
+  if (ev === 'pin-short'){ say(t('💡 Type all 4 numbers first. Then press ENTER.','💡 Primero escribe los 4 números. Luego presiona ENTRAR.'), 'think', true); return; }
+  if (ev === 'amt-bad'){ say(t('💡 This ATM gives $20 bills. Press CLEAR and type 8 then 0.','💡 Este cajero da billetes de $20. Presiona BORRAR y escribe 8 y luego 0.'), 'think', true); return; }
   if ((s.type === 'do' || s.type === 'part') && match(s.done, ev)){
     if (L.stepLock === L.i) return; L.stepLock = L.i;
     sfx.good(); toast(praise()); mood('happy'); setHl(null);
@@ -1046,16 +1135,17 @@ function lessonEvent(ev){
   }
 }
 function partTap(p){
-  const t = document.querySelector(`.part-tag[data-tag="${p}"]`); if (t) t.classList.add('show');
+  const tg = document.querySelector(`.part-tag[data-tag="${p}"]`); if (tg) tg.classList.add('show');
 }
 
 /* ================= questions ================= */
-function ask(q, done){
-  pendingAsk = true; mistakesThisStep = 0;
+function ask(q, done, ref){
+  pendingAsk = true; mistakesThisStep = 0; curAsk = {done, ref:ref || null};
   const where = q.where || 'card';
-  const choices = q.yesno ? ['👍 Yes','👎 No'] : q.choices;
+  const choices = q.yesno ? [t('👍 Yes','👍 Sí'),'👎 No'] : q.choices;
   const btns = choices.map((c,i) => `<button class="choice" data-ci="${i}">${esc(c)}</button>`).join('');
-  const finish = () => { pendingAsk = false; $('#quiz').hidden = true; $('#bChoices').hidden = true; $('#bChoices').innerHTML = ''; done(); };
+  const myAsk = curAsk;
+  const finish = () => { if (curAsk !== myAsk) return; pendingAsk = false; curAsk = null; $('#quiz').hidden = true; $('#bChoices').hidden = true; $('#bChoices').innerHTML = ''; done(); };
   const onPick = (btn, box) => {
     const i = +btn.dataset.ci;
     if (btn.classList.contains('wrong') || btn.classList.contains('right')) return;
@@ -1066,20 +1156,21 @@ function ask(q, done){
       if (q.explain){
         if (where === 'card'){
           const ex = document.createElement('div'); ex.className = 'explain';
-          ex.innerHTML = `<p>✅ ${q.explain}</p><button class="big-btn" data-next>Next ▶</button>`;
+          ex.innerHTML = `<p>✅ ${q.explain}</p><button class="big-btn" data-next>${t('Next ▶','Siguiente ▶')}</button>`;
           box.closest('.quiz-card').appendChild(ex); ex.querySelector('[data-next]').addEventListener('click', finish);
           if (db.read) speak(q.explain);
         } else { say('✅ ' + q.explain, 'happy'); setTimeout(finish, 1800); }
       } else { toast(praise()); setTimeout(finish, 800); }
     } else {
       btn.classList.add('wrong'); sfx.nope(); countMistake(); mood('think');
-      const h = q.hint || 'Not quite. Try again!';
+      const h = q.hint || t('Not quite. Try again!','Casi. ¡Inténtalo otra vez!');
       if (where === 'card'){ let hn = box.closest('.quiz-card').querySelector('.qhint');
         if (!hn){ hn = document.createElement('p'); hn.className = 'qhint'; hn.style.cssText = 'font-size:21px;margin:12px 0 0;font-weight:700;color:#8a3a20'; box.closest('.quiz-card').appendChild(hn); }
         hn.textContent = '💡 ' + h; if (db.read) speak(h);
       } else say('💡 ' + h, 'think', true);
     }
   };
+  $('#quiz').hidden = true; $('#bChoices').hidden = true;
   if (where === 'bubble'){
     say(q.q, null);
     const box = $('#bChoices'); box.innerHTML = btns; box.hidden = false;
@@ -1090,14 +1181,14 @@ function ask(q, done){
     else if (q.receipt === 'last'){ const r = atm.wallet.receipts[atm.wallet.receipts.length-1]; if (r) pic = receiptHTML(r); }
     else if (q.pic) pic = `<div class="qpic">${q.pic}</div>`;
     const qz = $('#quiz');
-    qz.innerHTML = `<div class="quiz-card">${pic}<button class="qsay" aria-label="Read the question">🔊</button><h3>${esc(q.q)}</h3><div class="choices ${q.yesno?'yesno':''}">${btns}</div></div>`;
+    qz.innerHTML = `<div class="quiz-card">${pic}<button class="qsay" aria-label="${t('Read the question','Leer la pregunta')}">🔊</button><h3>${esc(q.q)}</h3><div class="choices ${q.yesno?'yesno':''}">${btns}</div></div>`;
     qz.hidden = false;
     $('#atmArea').scrollTop = 0;
     if (window.innerWidth <= 920) qz.scrollIntoView({block:'start'});
     const box = qz.querySelector('.choices');
     qz.querySelector('.qsay').addEventListener('click', () => speak(q.q + '. ' + choices.join('. ')));
     box.querySelectorAll('.choice').forEach(b => b.addEventListener('click', () => onPick(b, box)));
-    say(q.yesno ? 'Read the card. Tap <b>Yes</b> or <b>No</b>.' : 'Read the question. Tap the right answer.', null);
+    say(q.yesno ? t('Read the card. Tap <b>Yes</b> or <b>No</b>.','Lee la tarjeta. Toca <b>Sí</b> o <b>No</b>.') : t('Read the question. Tap the right answer.','Lee la pregunta. Toca la respuesta correcta.'), null);
     if (db.read) setTimeout(() => speak(q.q), 400);
   }
 }
@@ -1106,19 +1197,23 @@ function ask(q, done){
 let M = null;
 function startMission(def){
   mode = 'mission';
-  M = {def, pi:0, plan:def.plan.map(x => Object.assign({}, x)), asks:(def.asks||[]).map(x => Object.assign({}, x)), mistakes:0, cardBack:false, finished:false};
+  M = {def, idx:MISSIONS.indexOf(def), pi:0, plan:def.plan.map(x => Object.assign({}, x)), asks:(def.asks||[]).map(x => Object.assign({}, x)), afterI:0, mistakes:0, cardBack:false, finished:false, started:false};
   atm = makeAtm(Object.assign({pin:def.pin}, def.setup));
   openPlay(def.icon + ' ' + def.title, 0);
   $('#atm').hidden = false; $('#walletBox').hidden = false; $('#atmArea').classList.remove('noatm');
   renderAtm(); renderChecklist();
-  say(`<b>Mission:</b> ${def.goal}`, null);
+  say(goalLine(), null);
   $('#nextBtn').hidden = true;
+  missionIntro();
+}
+function missionIntro(){
+  const def = M.def;
   modal(`<div class="bigico">${def.icon}</div><h2>${esc(def.title)}</h2><p>${esc(def.story)}</p>
     <div class="goal">🎯 ${esc(def.goal)}</div>
-    <div class="modal-btns"><button class="big-btn sea" data-read>🔊 Read</button><button class="big-btn" data-go>Let's go! ▶</button></div>`,
+    <div class="modal-btns"><button class="big-btn sea" data-read>${t('🔊 Read','🔊 Leer')}</button><button class="big-btn" data-go>${t("Let's go! ▶",'¡Vamos! ▶')}</button></div>`,
     m => {
-      m.querySelector('[data-read]').addEventListener('click', () => speak(def.story + ' ' + def.goal));
-      m.querySelector('[data-go]').addEventListener('click', () => { closeModal(); say(`<b>Mission:</b> ${def.goal}`, null); resetIdle(); });
+      m.querySelector('[data-read]').addEventListener('click', () => speak(M.def.story + ' ' + M.def.goal));
+      m.querySelector('[data-go]').addEventListener('click', () => { closeModal(); M.started = true; say(goalLine(), null); resetIdle(); });
       if (db.read) speak(def.story + ' ' + def.goal);
     });
 }
@@ -1133,24 +1228,27 @@ function missionCtx(){
 }
 function missionHint(){
   const h = stateHint(missionCtx());
-  if (atm.state === 'pin' && atm.covered && atm.pinBuf.length < 4) return {msg:`Type your PIN. Tap the yellow note in your wallet to peek at it.`, hl:'#wPin'};
+  if (atm.state === 'pin' && atm.covered && atm.pinBuf.length < 4) return {msg:t('Type your PIN. Tap the yellow note in your wallet to peek at it.','Escribe tu PIN. Toca la nota amarilla de tu cartera para verlo.'), hl:'#wPin'};
   return h;
 }
 function missionGuard(key, a, p){
-  if (key === 'cancel') return {msg:'Whoa! <b>CANCEL</b> would stop your mission. Let\'s keep going!'};
+  if (key === 'cancel') return {msg:t("Whoa! <b>CANCEL</b> would stop your mission. Let's keep going!",'¡Cuidado! <b>CANCELAR</b> detendría tu misión. ¡Sigamos!')};
   const A = atm, item = M.plan[M.pi], ctx = missionCtx();
   if (a === 'opt'){
     if (A.state === 'menu' && p !== ctx.menu){
-      const msgs = {balance:'The mission says to check your balance. Tap <b>Check Balance</b>.', withdraw:'You need to get cash. Tap <b>Get Cash</b>.', deposit:'You need to put money in. Tap <b>Deposit</b>.', done:"You did every mission step! Tap <b>I'm Done</b>."};
+      const msgs = {balance:t('The mission says to check your balance. Tap <b>Check Balance</b>.','La misión dice que mires tu saldo. Toca <b>Ver saldo</b>.'),
+        withdraw:t('You need to get cash. Tap <b>Get Cash</b>.','Necesitas sacar dinero. Toca <b>Sacar dinero</b>.'),
+        deposit:t('You need to put money in. Tap <b>Deposit</b>.','Necesitas meter dinero. Toca <b>Depositar</b>.'),
+        done:t("You did every mission step! Tap <b>I'm Done</b>.",'¡Hiciste todos los pasos de la misión! Toca <b>Terminé</b>.')};
       return {msg:msgs[ctx.menu], hl:`[data-opt="${ctx.menu}"]`};
     }
     if (A.state === 'withdraw' && /^a\d+$/.test(p)) return withdrawCheck(item, parseInt(p.slice(1),10), false);
-    if (A.state === 'receiptq' && ctx.receipt === 'yes' && p === 'no') return {msg:'This mission needs a receipt. Tap <b>Yes</b>.', hl:'[data-opt="yes"]'};
-    if (A.state === 'more' && p !== ctx.more) return {msg: ctx.more === 'yes' ? 'You still have more to do! Tap <b>Yes</b>.' : 'You did everything! Tap <b>No</b>.', hl:`[data-opt="${ctx.more}"]`};
+    if (A.state === 'receiptq' && ctx.receipt === 'yes' && p === 'no') return {msg:t('This mission needs a receipt. Tap <b>Yes</b>.','Esta misión necesita un recibo. Toca <b>Sí</b>.'), hl:'[data-opt="yes"]'};
+    if (A.state === 'more' && p !== ctx.more) return {msg: ctx.more === 'yes' ? t('You still have more to do! Tap <b>Yes</b>.','¡Todavía te falta algo! Toca <b>Sí</b>.') : t('You did everything! Tap <b>No</b>.','¡Ya hiciste todo! Toca <b>No</b>.'), hl:`[data-opt="${ctx.more}"]`};
     if (A.state === 'deposit' && p === 'ddone' && item && item.do === 'deposit'){
       const s = sumOf(A.depIn);
-      if (s > item.amount) return {msg:`You put in $${s}. That is too much! The mission says $${item.amount}. Tap <b>Start Over</b>.`, hl:'[data-opt="dreset"]'};
-      if (s < item.amount) return {msg:`You put in $${s}. You need $${item.amount}. Tap more bills in your wallet.`, hl:'#wBills'};
+      if (s > item.amount) return {msg:t(`You put in $${s}. That is too much! The mission says $${item.amount}. Tap <b>Start Over</b>.`,`Metiste $${s}. ¡Es demasiado! La misión dice $${item.amount}. Toca <b>Empezar de nuevo</b>.`), hl:'[data-opt="dreset"]'};
+      if (s < item.amount) return {msg:t(`You put in $${s}. You need $${item.amount}. Tap more bills in your wallet.`,`Metiste $${s}. Necesitas $${item.amount}. Toca más billetes de tu cartera.`), hl:'#wBills'};
     }
   }
   if (a === 'enter' && A.state === 'other'){
@@ -1160,68 +1258,73 @@ function missionGuard(key, a, p){
   return null;
 }
 function withdrawCheck(item, n, typed){
-  if (!item || item.do !== 'withdraw') return {msg:'You do not need cash for this mission.'};
+  if (!item || item.do !== 'withdraw') return {msg:t('You do not need cash for this mission.','No necesitas sacar dinero en esta misión.')};
   if (item.check) return item.check(n);
   const need = item.first && !item.tried ? item.first : item.amount;
   if (n === need) return null;
-  if (typed) return {msg:`You typed $${n}. You need $${need}. Press yellow <b>CLEAR</b> and try again.`, hl:'#kClear'};
-  if (!FAST.includes(need)) return {msg:`There is no $${need} button. Tap <b>Other Amount</b>.`, hl:'[data-opt="other"]'};
-  return {msg: item.first && !item.tried ? `First, try to get <b>$${need}</b>.` : `The mission says get <b>$${need}</b>.`, hl:`[data-opt="a${need}"]`};
+  if (typed) return {msg:t(`You typed $${n}. You need $${need}. Press yellow <b>CLEAR</b> and try again.`,`Escribiste $${n}. Necesitas $${need}. Presiona el amarillo <b>BORRAR</b> e inténtalo otra vez.`), hl:'#kClear'};
+  if (!FAST.includes(need)) return {msg:t(`There is no $${need} button. Tap <b>Other Amount</b>.`,`No hay un botón de $${need}. Toca <b>Otra cantidad</b>.`), hl:'[data-opt="other"]'};
+  return {msg: item.first && !item.tried ? t(`First, try to get <b>$${need}</b>.`,`Primero, trata de sacar <b>$${need}</b>.`) : t(`The mission says get <b>$${need}</b>.`,`La misión dice que saques <b>$${need}</b>.`), hl:`[data-opt="a${need}"]`};
 }
 function missionEvent(ev){
   const item = M.plan[M.pi];
-  if (ev === 'pin-bad'){ say('💡 That PIN was not right. Tap the yellow note to peek at your PIN. Then try again!', 'think', true); setHl('#wPin'); return; }
-  if (ev === 'pin-short'){ say('💡 Type all 4 numbers first. Then press ENTER.', 'think', true); return; }
-  if (ev === 'amt-bad'){ say('💡 This ATM gives $20 bills. Press CLEAR and try again.', 'think', true); return; }
+  if (ev === 'pin-bad'){ say(t('💡 That PIN was not right. Tap the yellow note to peek at your PIN. Then try again!','💡 Ese PIN no es correcto. Toca la nota amarilla para ver tu PIN. ¡Luego inténtalo otra vez!'), 'think', true); setHl('#wPin'); return; }
+  if (ev === 'pin-short'){ say(t('💡 Type all 4 numbers first. Then press ENTER.','💡 Primero escribe los 4 números. Luego presiona ENTRAR.'), 'think', true); return; }
+  if (ev === 'amt-bad'){ say(t('💡 This ATM gives $20 bills. Press CLEAR and try again.','💡 Este cajero da billetes de $20. Presiona BORRAR e inténtalo otra vez.'), 'think', true); return; }
   if (item){
     const done = (item.do === 'balance' && ev === 'bal-seen') || (item.do === 'withdraw' && ev === 'withdraw:' + item.amount && (!item.first || item.tried)) || (item.do === 'deposit' && ev === 'deposit-ok');
-    if (done){ M.pi++; mistakesThisStep = 0; sfx.good(); toast('✔ ' + item.label); mood('happy'); renderChecklist(); setHl(null); }
+    if (done){ M.pi++; mistakesThisStep = 0; sfx.good(); toast('✔ ' + (item.first ? item.insteadLabel : item.label)); mood('happy'); renderChecklist(); setHl(null); }
     if (item.first && ev === 'nofunds:' + item.first){ item.tried = true; mistakesThisStep = 0; say(item.nofundsMsg, 'think'); renderChecklist(); }
   }
-  M.asks.forEach(q => { if (!q.shown && q.on === ev){ q.shown = true; setTimeout(() => ask(q, () => say(`<b>Mission:</b> ${M.def.goal}`, null)), atm.state === 'wait' ? 1000 : 150); } });
+  M.asks.forEach((q, qi) => { if (!q.shown && q.on === ev){ q.shown = true; setTimeout(() => ask(M.asks[qi], () => say(goalLine(), null), {src:'masks', i:qi}), atm.state === 'wait' ? 1000 : 150); } });
   if (ev === 'take:card' && M.pi >= M.plan.length) M.cardBack = true;
   if (ev.startsWith('take:') || ev === 'cancel') renderChecklist();
   if (ev === 'bye' && M.pi >= M.plan.length && !M.finished){
     M.finished = true; M.cardBack = true; renderChecklist();
-    const after = (M.def.after || []).slice();
-    const runAfter = () => { const q = after.shift(); if (q) setTimeout(() => ask(q, runAfter), 400); else setTimeout(finishActivity, 500); };
-    runAfter();
+    M.afterI = 0; runAfter();
   } else if (ev.startsWith('opt:') || ev.startsWith('take:') || ev === 'card-in' || ev === 'pin-ok'){
-    if (!pendingAsk && $('#bubble').classList.contains('hint')) say(`<b>Mission:</b> ${M.def.goal}`, null);
+    if (!pendingAsk && $('#bubble').classList.contains('hint')) say(goalLine(), null);
   }
+}
+function runAfter(){
+  const list = M.def.after || [];
+  const k = M.afterI;
+  if (k < list.length){ M.afterI++; setTimeout(() => ask(M.def.after[k], runAfter, {src:'after', i:k}), 400); }
+  else setTimeout(finishActivity, 500);
 }
 function renderChecklist(){
   const c = $('#checklist'); c.hidden = false;
-  const rows = M.plan.map((it, i) => ({t:it.label, ok:i < M.pi || (it.first && it.tried && i <= M.pi && it.label.startsWith('Try'))}));
-  if (M.plan.some(x => x.first)){ const it = M.plan[0]; rows[0].ok = !!it.tried; rows.splice(1, 0, {t:'Get $20 instead', ok:M.pi > 0}); }
-  if (M.def.receipt === 'yes') rows.push({t:'Get a receipt', ok:atm.wallet.receipts.length > 0});
-  rows.push({t:'Take your card back', ok:M.cardBack});
-  c.innerHTML = `<h4>🎯 Mission checklist</h4><ul>${rows.map(r => `<li class="${r.ok?'ok':''}"><span class="bx">${r.ok?'✔':''}</span><span>${esc(r.t)}</span></li>`).join('')}</ul>`;
+  const rows = M.plan.map((it, i) => ({t:it.label, ok:i < M.pi}));
+  if (M.plan.some(x => x.first)){ const it = M.plan[0]; rows[0].ok = !!it.tried; rows.splice(1, 0, {t:it.insteadLabel, ok:M.pi > 0}); }
+  if (M.def.receipt === 'yes') rows.push({t:t('Get a receipt','Pedir un recibo'), ok:atm.wallet.receipts.length > 0});
+  rows.push({t:t('Take your card back','Sacar tu tarjeta'), ok:M.cardBack});
+  c.innerHTML = `<h4>${t('🎯 Mission checklist','🎯 Lista de la misión')}</h4><ul>${rows.map(r => `<li class="${r.ok?'ok':''}"><span class="bx">${r.ok?'✔':''}</span><span>${esc(r.t)}</span></li>`).join('')}</ul>`;
 }
 
 /* ================= free play ================= */
 let freeReminded = false;
+const freeIntro = () => t('Free play! Try anything you want. Your PIN is <b>1 2 3 4</b>. Tap <b>Help</b> if you get stuck.','¡Juego libre! Prueba lo que quieras. Tu PIN es <b>1 2 3 4</b>. Toca <b>Ayuda</b> si te atoras.');
 function startFree(){
   mode = 'free'; freeReminded = false;
   atm = makeAtm({balance:120, bills:[20,10,5,1], pin:'1234', showPin:true});
-  openPlay('🏧 Free Play ATM', 0);
+  openPlay(t('🏧 Free Play ATM','🏧 Cajero libre'), 0);
   $('#atm').hidden = false; $('#walletBox').hidden = false; $('#checklist').hidden = true; $('#atmArea').classList.remove('noatm');
   renderAtm(); $('#nextBtn').hidden = true;
-  say('Free play! Try anything you want. Your PIN is <b>1 2 3 4</b>. Tap <b>Help</b> if you get stuck.', null);
+  say(freeIntro(), null);
 }
 function freeEvent(ev){
-  if (ev === 'pin-bad'){ say('💡 That PIN was not right. Your PIN is <b>1 2 3 4</b>.', 'think', true); return; }
-  if (ev === 'bye'){ say('Great job! 🐢 You can do it again, or try something new!', 'happy'); return; }
-  if (ev === 'nofunds:' + atm.tried){ say('💡 Not enough money! Pick a smaller amount.', 'think', true); return; }
-  if (ev.startsWith('withdraw:')){ say('You got cash! 💵 Now finish up and take your things.', 'happy'); return; }
-  if (ev === 'deposit-ok'){ say('Deposit done! Your money is safe. 🏦', 'happy'); return; }
+  if (ev === 'pin-bad'){ say(t('💡 That PIN was not right. Your PIN is <b>1 2 3 4</b>.','💡 Ese PIN no es correcto. Tu PIN es <b>1 2 3 4</b>.'), 'think', true); return; }
+  if (ev === 'bye'){ say(t('Great job! 🐢 You can do it again, or try something new!','¡Muy bien! 🐢 ¡Puedes hacerlo otra vez o probar algo nuevo!'), 'happy'); return; }
+  if (ev === 'nofunds:' + atm.tried){ say(t('💡 Not enough money! Pick a smaller amount.','💡 ¡No alcanza el dinero! Escoge una cantidad más pequeña.'), 'think', true); return; }
+  if (ev.startsWith('withdraw:')){ say(t('You got cash! 💵 Now finish up and take your things.','¡Sacaste dinero! 💵 Ahora termina y saca tus cosas.'), 'happy'); return; }
+  if (ev === 'deposit-ok'){ say(t('Deposit done! Your money is safe. 🏦','¡Depósito listo! Tu dinero está seguro. 🏦'), 'happy'); return; }
 }
 
 /* ================= play view plumbing ================= */
 function openPlay(title, n){
-  hush(); setHl(null); pendingAsk = false; busy = false; peeking = false;
+  hush(); setHl(null); pendingAsk = false; curAsk = null; busy = false; peeking = false;
   $('#quiz').hidden = true; $('#bChoices').hidden = true;
-  $$('.part-tag').forEach(t => t.classList.remove('show'));
+  $$('.part-tag').forEach(x => x.classList.remove('show'));
   $('#actTitle').textContent = title;
   renderDots(-1, n);
   show('#play');
@@ -1234,6 +1337,7 @@ function resetIdle(){
   if (mode === 'lesson' || mode === 'mission') idleTimer = setTimeout(() => $('#helpBtn').classList.add('wiggle'), 20000);
 }
 
+let lastFinish = null;
 function finishActivity(){
   clearTimeout(idleTimer);
   const isL = mode === 'lesson', def = isL ? L.def : M.def;
@@ -1241,79 +1345,130 @@ function finishActivity(){
   const shells = mis <= 1 ? 3 : mis <= 3 ? 2 : 1;
   const p = prog(); p.done[def.id] = Math.max(p.done[def.id] || 0, shells); p.date = Date.now(); save();
   sfx.win(); mood('happy');
-  const list = isL ? LESSONS : MISSIONS, idx = list.indexOf(def), nxt = list[idx+1] || (isL ? MISSIONS[0] : null);
+  lastFinish = {isL, idx: isL ? L.idx : M.idx, shells};
+  mode = 'done';
+  showFinish(true);
+}
+function showFinish(fresh){
+  const {isL, idx, shells} = lastFinish;
+  const list = isL ? LESSONS : MISSIONS, def = list[idx];
+  const nxt = list[idx+1] || (isL ? MISSIONS[0] : null);
   const name = student ? ', ' + esc(student) : '';
-  const lines = ['You did it' + name + '!', 'Amazing work' + name + '!', 'You are a star' + name + '!'];
+  const lines = t(['You did it' + name + '!', 'Amazing work' + name + '!', 'You are a star' + name + '!'], ['¡Lo lograste' + name + '!', '¡Excelente trabajo' + name + '!', '¡Eres una estrella' + name + '!']);
   modal(`<div class="bubbles" id="bub"></div><div style="width:120px;margin:0 auto" class="hop">${TURTLE}</div>
-    <h2>${lines[3-shells]}</h2><p>${isL ? 'Lesson' : 'Mission'} complete: <b>${esc(def.title)}</b></p>
+    <h2>${lines[3-shells]}</h2><p>${isL ? t('Lesson complete:','Lección terminada:') : t('Mission complete:','Misión terminada:')} <b>${esc(def.title)}</b></p>
     <div class="shell-row">${[0,1,2].map(k => `<span class="${k<shells?'':'off'}">🐚</span>`).join('')}</div>
-    <p style="font-size:19px">${shells === 3 ? 'You earned all 3 shells!' : 'Play again to get all 3 shells!'}</p>
-    <div class="modal-btns">${nxt ? `<button class="big-btn" data-next>Next: ${esc(nxt.title)} ▶</button>` : ''}
-    <button class="big-btn sand" data-again>↻ Play again</button><button class="big-btn sea" data-map>🗺️ Map</button></div>`,
+    <p style="font-size:19px">${shells === 3 ? t('You earned all 3 shells!','¡Ganaste las 3 conchas!') : t('Play again to get all 3 shells!','¡Juega otra vez para ganar las 3 conchas!')}</p>
+    <div class="modal-btns">${nxt ? `<button class="big-btn" data-next>${t('Next:','Siguiente:')} ${esc(nxt.title)} ▶</button>` : ''}
+    <button class="big-btn sand" data-again>${t('↻ Play again','↻ Jugar otra vez')}</button><button class="big-btn sea" data-map>${t('🗺️ Map','🗺️ Mapa')}</button></div>`,
     m => {
       const bub = m.querySelector('#bub');
-      for (let k = 0; k < 14; k++){ const s = document.createElement('span'); const z = 14 + Math.random()*30; s.style.cssText = `left:${Math.random()*100}%;width:${z}px;height:${z}px;animation-delay:${Math.random()*1.5}s`; bub.appendChild(s); }
+      if (fresh) for (let k = 0; k < 14; k++){ const s = document.createElement('span'); const z = 14 + Math.random()*30; s.style.cssText = `left:${Math.random()*100}%;width:${z}px;height:${z}px;animation-delay:${Math.random()*1.5}s`; bub.appendChild(s); }
       if (nxt) m.querySelector('[data-next]').addEventListener('click', () => { closeModal(); (LESSONS.includes(nxt) ? startLesson : startMission)(nxt); });
       m.querySelector('[data-again]').addEventListener('click', () => { closeModal(); (isL ? startLesson : startMission)(def); });
       m.querySelector('[data-map]').addEventListener('click', () => { closeModal(); goMap(); });
-      if (db.read) speak(lines[3-shells] + ' You earned ' + shells + (shells === 1 ? ' shell.' : ' shells.'));
+      if (db.read) speak(lines[3-shells] + ' ' + t('You earned ' + shells + (shells === 1 ? ' shell.' : ' shells.'), 'Ganaste ' + shells + (shells === 1 ? ' concha.' : ' conchas.')));
     });
-  mode = 'done';
 }
 
 /* ================= modal ================= */
+let modalKind = '';
 function modal(html, wire){
-  const m = $('#modal'); m.innerHTML = `<div class="modal-card">${html}</div>`; m.hidden = false; if (wire) wire(m);
+  const m = $('#modal'); m.innerHTML = `<div class="modal-card"><button class="modal-lang" data-mlang lang="${db.lang === 'es' ? 'en' : 'es'}">${db.lang === 'es' ? '🌎 English' : '🌎 Español'}</button>${html}</div>`; m.hidden = false;
+  m.querySelector('[data-mlang]').addEventListener('click', () => setLang(db.lang === 'es' ? 'en' : 'es'));
+  if (wire) wire(m);
 }
-function closeModal(){ $('#modal').hidden = true; $('#modal').innerHTML = ''; }
+function closeModal(){ $('#modal').hidden = true; $('#modal').innerHTML = ''; modalKind = ''; }
 
 /* ================= map ================= */
 function goMap(){
   mode = 'idle'; hush(); clearTimeout(idleTimer);
+  renderMap();
+  show('#map');
+  if (db.read) speak((student ? t('Hi ','Hola, ') + student + '! ' : '') + t('Pick a lesson. Start with number 1.','Elige una lección. Empieza con el número 1.'));
+}
+function renderMap(){
   const p = prog();
-  $('#hello').textContent = student ? `Hi, ${student}!` : 'Hi there!';
+  $('#hello').textContent = student ? t(`Hi, ${student}!`, `¡Hola, ${student}!`) : t('Hi there!','¡Hola!');
   const shellsHtml = n => [0,1,2].map(k => `<span class="${k<n?'':'off'}">🐚</span>`).join('');
   const firstOpen = LESSONS.find(l => !p.done[l.id]);
-  $('#lessonTiles').innerHTML = LESSONS.map((l,i) => `<button class="tile" data-l="${i}">${firstOpen===l?'<span class="badge">Start here!</span>':''}<span class="num">${i+1}</span><span class="ico">${l.icon}</span><h3>${l.title}</h3><span class="sub">${l.sub}</span><span class="got">${shellsHtml(p.done[l.id]||0)}</span></button>`).join('');
+  $('#lessonTiles').innerHTML = LESSONS.map((l,i) => `<button class="tile" data-l="${i}">${firstOpen===l?`<span class="badge">${t('Start here!','¡Empieza aquí!')}</span>`:''}<span class="num">${i+1}</span><span class="ico">${l.icon}</span><h3>${l.title}</h3><span class="sub">${l.sub}</span><span class="got">${shellsHtml(p.done[l.id]||0)}</span></button>`).join('');
   $('#missionTiles').innerHTML = MISSIONS.map((m,i) => `<button class="tile mission" data-m="${i}"><span class="num">${i+1}</span><span class="ico">${m.icon}</span><h3>${m.title}</h3><span class="sub">${m.sub}</span><span class="got">${shellsHtml(p.done[m.id]||0)}</span></button>`).join('');
   $('#shellCount').textContent = Object.values(p.done).reduce((a,b)=>a+b,0);
-  show('#map');
-  if (db.read) speak((student ? 'Hi ' + student + '! ' : '') + 'Pick a lesson. Start with number 1.');
 }
-$('#lessonTiles').addEventListener('click', e => { const t = e.target.closest('[data-l]'); if (t) startLesson(LESSONS[+t.dataset.l]); });
-$('#missionTiles').addEventListener('click', e => { const t = e.target.closest('[data-m]'); if (t) startMission(MISSIONS[+t.dataset.m]); });
+$('#lessonTiles').addEventListener('click', e => { const tl = e.target.closest('[data-l]'); if (tl) startLesson(LESSONS[+tl.dataset.l]); });
+$('#missionTiles').addEventListener('click', e => { const tl = e.target.closest('[data-m]'); if (tl) startMission(MISSIONS[+tl.dataset.m]); });
 $('#freeTile').addEventListener('click', startFree);
 $('#homeBtn').addEventListener('click', () => { closeModal(); goMap(); });
 
-$('#shellsBtn').addEventListener('click', () => {
+function showShells(){
   const p = prog();
   const row = d => `<div><span>${d.icon} ${esc(d.title)}</span><span>${p.done[d.id] ? '🐚'.repeat(p.done[d.id]) : '—'}</span></div>`;
   const nl = LESSONS.filter(l => p.done[l.id]).length, nm = MISSIONS.filter(m => p.done[m.id]).length;
   const total = Object.values(p.done).reduce((a,b)=>a+b,0);
-  modal(`<button class="close-x" data-close aria-label="Close">✖</button>
+  const who = student ? t(esc(student) + "'s Shells", 'Conchas de ' + esc(student)) : t('My Shells','Mis conchas');
+  modal(`<button class="close-x" data-close aria-label="${t('Close','Cerrar')}">✖</button>
     <div style="width:90px;margin:0 auto">${TURTLE}</div>
-    <p style="margin:0">ATM Practice with Shelly</p>
-    <p class="cert-name">${student ? esc(student) + "'s" : 'My'} Shells: ${total} 🐚</p>
-    <p>${nl} of ${LESSONS.length} lessons · ${nm} of ${MISSIONS.length} missions</p>
-    <div class="prog-list"><h4>Lessons</h4>${LESSONS.map(row).join('')}<h4>Missions</h4>${MISSIONS.map(row).join('')}</div>
-    <p style="font-size:17px;color:var(--ink2)">${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}</p>
-    <div class="modal-btns"><button class="big-btn coral" data-print>🖨️ Show my teacher</button><button class="big-btn sand" data-name>✏️ Change name</button></div>`,
+    <p style="margin:0">${t('ATM Practice with Shelly','Practica el cajero con Shelly')}</p>
+    <p class="cert-name">${who}: ${total} 🐚</p>
+    <p>${t(`${nl} of ${LESSONS.length} lessons · ${nm} of ${MISSIONS.length} missions`, `${nl} de ${LESSONS.length} lecciones · ${nm} de ${MISSIONS.length} misiones`)}</p>
+    <div class="prog-list"><h4>${t('Lessons','Lecciones')}</h4>${LESSONS.map(row).join('')}<h4>${t('Missions','Misiones')}</h4>${MISSIONS.map(row).join('')}</div>
+    <p style="font-size:17px;color:var(--ink2)">${new Date().toLocaleDateString(db.lang === 'es' ? 'es-US' : 'en-US',{weekday:'long',month:'long',day:'numeric'})}</p>
+    <div class="modal-btns"><button class="big-btn coral" data-print>${t('🖨️ Show my teacher','🖨️ Imprimir para mi maestro')}</button><button class="big-btn sand" data-name>${t('✏️ Change name','✏️ Cambiar nombre')}</button></div>`,
     m => {
       m.querySelector('[data-close]').addEventListener('click', closeModal);
       m.querySelector('[data-print]').addEventListener('click', () => window.print());
       m.querySelector('[data-name]').addEventListener('click', () => { closeModal(); show('#start'); });
     });
-});
+  modalKind = 'shells';
+}
+$('#shellsBtn').addEventListener('click', showShells);
+
+/* ================= switch language (works mid-activity) ================= */
+function setLang(l){
+  db.lang = l; save();
+  hush(); buildContent(); applyStatic(); syncToggles();
+  if (!$('#map').hidden) renderMap();
+  if (modalKind === 'shells') showShells();
+  if ($('#play').hidden){ if (db.read) speak(t('English', 'Español')); return; }
+  if (mode === 'lesson'){
+    L.def = LESSONS[L.idx];
+    $('#actTitle').textContent = L.def.icon + ' ' + L.def.title;
+    renderAtm();
+    if (pendingAsk && curAsk){ const d = curAsk.done; ask(L.def.steps[L.i], d, curAsk.ref); }
+    else if (L.def.steps[L.i] && L.stepLock !== L.i) showLessonStep();
+  } else if (mode === 'mission'){
+    const def = MISSIONS[M.idx]; M.def = def;
+    M.plan.forEach((it, i) => { const n = def.plan[i]; ['label','insteadLabel','nofundsMsg','hint','check'].forEach(k => { if (n[k] !== undefined) it[k] = n[k]; }); });
+    M.asks = (def.asks || []).map((x, i) => Object.assign({}, x, {shown: M.asks[i] && M.asks[i].shown}));
+    $('#actTitle').textContent = def.icon + ' ' + def.title;
+    renderAtm(); renderChecklist();
+    if (!M.started && !$('#modal').hidden){ missionIntro(); return; }
+    if (pendingAsk && curAsk){
+      const d = curAsk.done, r = curAsk.ref;
+      const q = r && r.src === 'after' ? def.after[r.i] : r && r.src === 'masks' ? M.asks[r.i] : null;
+      if (q) ask(q, d, r);
+    } else say(goalLine(), null);
+  } else if (mode === 'free'){
+    $('#actTitle').textContent = t('🏧 Free Play ATM','🏧 Cajero libre');
+    renderAtm(); say(freeIntro(), null);
+  } else if (mode === 'done' && lastFinish){
+    showFinish(false);
+  }
+}
 
 /* ================= wire ATM controls ================= */
-const KEYS = ['1','2','3','cancel','4','5','6','clear','7','8','9','enter','','0','',''];
-$('#keypad').innerHTML = KEYS.map(k => {
-  if (k === '') return '<span class="k blank"></span>';
-  if (k === 'cancel') return '<button class="k fn cancel" id="kCancel" data-k="cancel">✖<br>CANCEL</button>';
-  if (k === 'clear') return '<button class="k fn clear" id="kClear" data-k="clear">◀<br>CLEAR</button>';
-  if (k === 'enter') return '<button class="k fn enter" id="kEnter" data-k="enter">✔<br>ENTER</button>';
-  return `<button class="k" data-k="${k}">${k}</button>`;
-}).join('');
+function renderKeypad(){
+  const KEYS = ['1','2','3','cancel','4','5','6','clear','7','8','9','enter','','0','',''];
+  $('#keypad').innerHTML = KEYS.map(k => {
+    if (k === '') return '<span class="k blank"></span>';
+    if (k === 'cancel') return `<button class="k fn cancel" id="kCancel" data-k="cancel">✖<br>${t('CANCEL','CANCELAR')}</button>`;
+    if (k === 'clear') return `<button class="k fn clear" id="kClear" data-k="clear">◀<br>${t('CLEAR','BORRAR')}</button>`;
+    if (k === 'enter') return `<button class="k fn enter" id="kEnter" data-k="enter">✔<br>${t('ENTER','ENTRAR')}</button>`;
+    return `<button class="k" data-k="${k}">${k}</button>`;
+  }).join('');
+  applyHl();
+}
 
 $('#keypad').addEventListener('click', e => {
   const b = e.target.closest('[data-k]'); if (!b) return;
@@ -1337,9 +1492,9 @@ $('#slotReceipt').addEventListener('click', () => { if (atm.explore) return act(
 $('#walletItems').addEventListener('click', e => {
   if (e.target.closest('#wCard')){ if (atm.explore) return nudge(currentHint(), true); act('card'); return; }
   const b = e.target.closest('[data-bill]');
-  if (b){ if (atm.state !== 'deposit'){ if (mode !== 'idle') say('💡 That is your money. You can put it in the bank with <b>Deposit</b>.', 'think', true); return; } act('bill', +b.dataset.bill); return; }
+  if (b){ if (atm.state !== 'deposit'){ if (mode !== 'idle') say(t('💡 That is your money. You can put it in the bank with <b>Deposit</b>.','💡 Ese es tu dinero. Lo puedes meter en el banco con <b>Depositar</b>.'), 'think', true); return; } act('bill', +b.dataset.bill); return; }
   const r = e.target.closest('[data-rcpt]');
-  if (r){ const rc = atm.wallet.receipts[+r.dataset.rcpt]; modal(`<button class="close-x" data-close aria-label="Close">✖</button><h2>Your receipt 🧾</h2>${receiptHTML(rc)}<div class="modal-btns"><button class="big-btn" data-close>OK</button></div>`, m => m.querySelectorAll('[data-close]').forEach(x => x.addEventListener('click', closeModal))); return; }
+  if (r){ const rc = atm.wallet.receipts[+r.dataset.rcpt]; modal(`<button class="close-x" data-close aria-label="${t('Close','Cerrar')}">✖</button><h2>${t('Your receipt 🧾','Tu recibo 🧾')}</h2>${receiptHTML(rc)}<div class="modal-btns"><button class="big-btn" data-close>OK</button></div>`, m => m.querySelectorAll('[data-close]').forEach(x => x.addEventListener('click', closeModal))); return; }
   if (e.target.closest('#wPin')){
     if (atm.peek) return;
     peeking = true; renderWallet(); applyHl(); clearTimeout(peekTimer);
@@ -1356,10 +1511,9 @@ $('#helpBtn').addEventListener('click', () => {
   resetIdle();
   if (mode === 'lesson' && L.stepLock === L.i) return;
   if (mode === 'mission' && M.finished && !pendingAsk) return;
-  if (pendingAsk){ say('💡 Read the question again. Tap 🔊 to hear it.', 'think', true); return; }
+  if (pendingAsk){ say(t('💡 Read the question again. Tap 🔊 to hear it.','💡 Lee la pregunta otra vez. Toca 🔊 para escucharla.'), 'think', true); return; }
   const h = currentHint(); if (!h) return;
   say('💡 ' + h.msg, 'think', true); setHl(h.hl || null);
-  if (db.read) speak(h.msg);
 });
 
 /* keyboard support for Chromebook keyboards */
@@ -1372,9 +1526,10 @@ document.addEventListener('keydown', e => {
 
 /* ================= boot ================= */
 atm = makeAtm({});
+applyStatic(); syncToggles();
 renderAtm();
 if (db.last){ student = db.last; }
-if (/[?&]debug\b/.test(location.search)) window.__dbg = () => ({atm, mode, L, M, ctx: M && mode === 'mission' ? missionCtx() : null, pendingAsk, busy});
+if (/[?&]debug\b/.test(location.search)) window.__dbg = () => ({atm, mode, L, M, ctx: M && mode === 'mission' ? missionCtx() : null, pendingAsk, busy, lang:db.lang, setLang});
 })();
 </script>
 </body>

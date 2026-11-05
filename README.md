@@ -23,6 +23,7 @@ A touch-friendly ATM simulator for LFI students. Shelly the turtle walks student
 
 ## Teacher notes
 
+- Tap **🌎 Español** (on every screen) to switch the whole site to Spanish, including the ATM, hints, receipts and read-aloud. Students can switch back any time without losing their place. Share `?lang=es` at the end of the link to open in Spanish.
 - Turn on **Read to me** for students who need text read aloud. Every screen also has a 🔊 button.
 - Wrong taps never fail a student. Shelly gives a hint and a glowing target after a second try.
 - Progress is saved in the browser by first name. **My Shells → Show my teacher** prints a progress sheet.
